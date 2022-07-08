@@ -1,7 +1,7 @@
 // Example: Fill a PDF via the Anvil API
 //
-// * API docs: https://www.useanvil.com/docs/api/fill-pdf
-// * Anvil node client: https://github.com/anvilco/node-anvil
+// * PDF filling API docs: https://www.useanvil.com/docs/api/fill-pdf
+// * Anvil Node.js client: https://github.com/anvilco/node-anvil
 //
 // This script is runnable as is, all you need to do is supply your own API key
 // in the ANVIL_API_KEY environment variable. By default this script fills a
@@ -9,7 +9,7 @@
 //
 // ANVIL_API_KEY=8hGbxtgNsA2nA1MH0ps4cyQyadhA2Wdt node examples/fill-pdf.js
 //
-// The filled PDF will be saved to `output/fill-putput.pdf`. You can open the
+// The filled PDF will be saved to `output/fill-output.pdf`. You can open the
 // filled PDF immediately after saving the file on OSX machines with the
 // `open` command:
 //
@@ -42,14 +42,14 @@ async function fillPDF () {
   console.log('Making fill request...')
   console.log('Finished! Status code:', statusCode) // => 200, 400, 404, etc
 
-  if (errors) {
-    console.log('There were errors!')
-    console.log(JSON.stringify(errors, null, 2))
-  } else {
+  if (statusCode === 200) {
     // `data` will be the filled PDF binary data. It is important that the
     // data is saved with no encoding! Otherwise the PDF file will be corrupt.
     fs.writeFileSync(outputFilepath, data, { encoding: null })
     console.log('Filled PDF saved to:', outputFilepath)
+  } else {
+    console.log('There were errors!')
+    console.log(JSON.stringify(errors, null, 2))
   }
 }
 
