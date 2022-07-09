@@ -37,9 +37,9 @@ const outputFilepath = path.join(__dirname, '..', 'output', 'fill-output.pdf')
 async function fillPDF () {
   const anvilClient = new Anvil({ apiKey })
   const exampleData = getExampleFillData()
-  const { statusCode, data, errors } = await anvilClient.fillPDF(pdfTemplateID, exampleData)
 
   console.log('Making fill request...')
+  const { statusCode, data, errors } = await anvilClient.fillPDF(pdfTemplateID, exampleData)
   console.log('Finished! Status code:', statusCode) // => 200, 400, 404, etc
 
   if (statusCode === 200) {

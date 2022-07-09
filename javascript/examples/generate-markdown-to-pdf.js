@@ -39,7 +39,7 @@ async function generateMarkdownPDF () {
     // `data` will be the filled PDF binary data. It is important that the
     // data is saved with no encoding! Otherwise the PDF file will be corrupt.
     fs.writeFileSync(outputFilepath, data, { encoding: null })
-    console.log('Filled PDF saved to:', outputFilepath)
+    console.log('Generated PDF saved to:', outputFilepath)
   } else {
     console.log('There were errors!')
     console.log(JSON.stringify(errors, null, 2))
