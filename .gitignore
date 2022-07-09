@@ -7,3 +7,4 @@ package-lock.json
 
 fill-output.pdf
 generate-html-output.pdf
+generate-markdown-output.pdf
