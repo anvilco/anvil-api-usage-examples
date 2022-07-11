@@ -1,19 +1,27 @@
-// Example: Generate a PDF from Markdown via the Anvil API
+// Example: Create an e-sign packet via the Anvil API
 //
-// * PDF generation API docs: https://www.useanvil.com/docs/api/generate-pdf
+// * E-sign API docs: https://www.useanvil.com/docs/api/e-signatures
 // * Anvil Node.js client: https://github.com/anvilco/node-anvil
 //
 // This script is runnable as is, all you need to do is supply your own API key
 // in the ANVIL_API_KEY environment variable.
 //
-// ANVIL_API_KEY=8hGbxtgNsA2nA1MH0ps4cyQyadhA2Wdt node examples/generate-markdown-to-pdf.js
+// ANVIL_API_KEY=8hGbxtgNsA2nA1MH0ps4cyQyadhA2Wdt node examples/create-etch-e-sign-packet.js your.real.email@ex.com
 //
-// The filled PDF will be saved to `output/generate-markdown-output.pdf`. You can
-// open the filled PDF immediately after saving the file on OSX machines with
-// the `open` command:
+// This script will create an e-sign packet with one signer and two documents,
+// then send a signature request to the email you specified. Use your real email
+// address!
 //
-// ANVIL_API_KEY=8hGbxtgNsA2nA1MH0ps4cyQyadhA2Wdt \
-//   node examples/generate-markdown-to-pdf.js && open output/generate-markdown-output.pdf
+// This script will:
+//
+// * Use a template sample PDF document
+// * Upload a new PDF document
+// * Insert data (names, emails, addresses, etc) on both PDFs
+// * Have the signer sign both documents
+//
+// After you run the script, you can find the new packet from the e-sign "Sent"
+// area in your dashboard. The dashboard URL to the new packet will be output as
+// well.
 
 const fs = require('fs')
 const path = require('path')
@@ -40,7 +48,8 @@ const signerName = 'Testy Signer'
 const signerEmail = process.argv[2]
 
 if (!signerEmail) {
-  console.log("Enter your email address as the script's 1st argument")
+  console.log('Enter your email address as the script\'s 1st argument')
+  console.log(`Usage: node ${process.argv[1]} your.real.email@example.com`)
   process.exit(1)
 }
 
@@ -58,6 +67,7 @@ async function createEtchPacket () {
     console.log(JSON.stringify(errors, null, 2))
   } else {
     const packetDetails = data.data.createEtchPacket
+    console.log('Visit the new packet on your dashboard:', packetDetails.detailsURL)
     console.log(JSON.stringify(packetDetails, null, 2))
   }
 }
