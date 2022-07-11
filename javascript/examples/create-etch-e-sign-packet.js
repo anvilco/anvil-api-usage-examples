@@ -8,9 +8,9 @@
 //
 // ANVIL_API_KEY=8hGbxtgNsA2nA1MH0ps4cyQyadhA2Wdt node examples/create-etch-e-sign-packet.js your.real.email@ex.com
 //
-// This script will create an e-sign packet with one signer and two documents,
-// then send a signature request to the email you specified. Use your real email
-// address!
+// This script will create an e-sign packet with one signer and two documents.
+// Then it will send a signature request to the email you specified.
+// Use your real email address!
 //
 // This script will:
 //
@@ -63,6 +63,8 @@ async function createEtchPacket () {
   console.log('Finished! Status code:', statusCode) // => 200, 400, 404, etc
 
   if (errors) {
+    // Note: because of the nature of GraphQL, statusCode may be a 200 even when
+    // there are errors.
     console.log('There were errors!')
     console.log(JSON.stringify(errors, null, 2))
   } else {
