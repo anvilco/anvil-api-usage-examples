@@ -21,8 +21,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "importsNotUsedAsValues": "error",
-    "checkJs": true,
-    "allowJs": true,
+    "checkJs": false,
+    "allowJs": false,
     "outDir": "dist"
   },
   "include": [

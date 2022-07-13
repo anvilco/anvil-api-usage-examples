@@ -25,6 +25,7 @@
 
 import path from 'path'
 import Anvil from '@anvilco/anvil'
+import type UploadWithOptions from '@anvilco/anvil/types/src/UploadWithOptions'
 import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
@@ -51,13 +52,25 @@ if (!signerEmail) {
   process.exit(1)
 }
 
+interface GraphQLData {
+  data: {
+    [key: string]: any
+  }
+}
+
+interface GraphQLResponse {
+  statusCode: number,
+  data: GraphQLData,
+  errors: any[]
+}
+
 async function createEtchPacket () {
   const anvilClient: Anvil = new Anvil({ apiKey })
   const ndaFile: UploadWithOptions = Anvil.prepareGraphQLFile(fileUploadPath, {})
   const variables: object = getPacketVariables(ndaFile)
 
   console.log('Creating Etch e-sign packet...')
-  const { statusCode, data, errors } = await anvilClient.createEtchPacket({
+  const { statusCode,data, errors } : GraphQLResponse = await anvilClient.createEtchPacket({
     variables,
     mutation: undefined,
     responseQuery: ''
@@ -70,7 +83,7 @@ async function createEtchPacket () {
     console.log('There were errors!')
     console.log(JSON.stringify(errors, null, 2))
   } else {
-    const packetDetails = data.data.createEtchPacket
+    const packetDetails = data.data['createEtchPacket']
     console.log('Visit the new packet on your dashboard:', packetDetails.detailsURL)
     console.log(JSON.stringify(packetDetails, null, 2))
   }
