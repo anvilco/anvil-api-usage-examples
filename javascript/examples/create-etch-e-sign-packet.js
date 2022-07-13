@@ -6,7 +6,7 @@
 // This script is runnable as is, all you need to do is supply your own API key
 // in the ANVIL_API_KEY environment variable.
 //
-// ANVIL_API_KEY=8hGbxtgNsA2nA1MH0ps4cyQyadhA2Wdt node examples/create-etch-e-sign-packet.js your.real.email@ex.com
+// ANVIL_API_KEY=<yourAPIKey> node examples/create-etch-e-sign-packet.js <your.real.email@ex.com>
 //
 // This script will create an e-sign packet with one signer and two documents.
 // Then it will send a signature request to the email you specified.

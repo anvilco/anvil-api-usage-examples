@@ -6,13 +6,13 @@
 // This script is runnable as is, all you need to do is supply your own API key
 // in the ANVIL_API_KEY environment variable.
 //
-// ANVIL_API_KEY=8hGbxtgNsA2nA1MH0ps4cyQyadhA2Wdt node examples/generate-markdown-to-pdf.js
+// ANVIL_API_KEY=<yourAPIKey> node examples/generate-markdown-to-pdf.js
 //
 // The filled PDF will be saved to `output/generate-markdown-output.pdf`. You can
 // open the filled PDF immediately after saving the file on OSX machines with
 // the `open` command:
 //
-// ANVIL_API_KEY=8hGbxtgNsA2nA1MH0ps4cyQyadhA2Wdt \
+// ANVIL_API_KEY=<yourAPIKey> \
 //   node examples/generate-markdown-to-pdf.js && open output/generate-markdown-output.pdf
 
 const fs = require('fs')
