@@ -1,0 +1,27 @@
+{
+  "name": "anvil-api-usage-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anvilco/anvil-api-usage-examples.git"
+  },
+  "author": "Anvil Foundry Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anvilco/anvil-api-usage-examples/issues"
+  },
+  "homepage": "https://github.com/anvilco/anvil-api-usage-examples#readme",
+  "dependencies": {
+    "@anvilco/anvil": "^2.11.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.4",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  }
+}
