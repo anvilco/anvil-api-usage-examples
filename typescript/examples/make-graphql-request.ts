@@ -18,10 +18,10 @@ import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
 // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-const apiKey: string = process.env['ANVIL_API_KEY'] ?? ''
+const apiKey = process.env['ANVIL_API_KEY'] ?? ''
 
 async function callQueries () {
-  const anvilClient: Anvil = new Anvil({ apiKey })
+  const anvilClient = new Anvil({ apiKey })
   const currentUser = await callCurrentUserQuery({ anvilClient })
   console.log('currentUser:', JSON.stringify(currentUser, null, 2))
 
@@ -63,7 +63,7 @@ async function callCurrentUserQuery ({ anvilClient }: { anvilClient: Anvil }) {
   `
 
   const variables = {}
-  const { data, errors }: Anvil.GraphQLResponse = await anvilClient.requestGraphQL(
+  const { data, errors } = await anvilClient.requestGraphQL(
     {
       query: currentUserQuery,
       variables,
@@ -101,7 +101,7 @@ async function callWeldQuery ({ anvilClient, weldEid }: { anvilClient: Anvil, we
   `
 
   const variables = { eid: weldEid }
-  const { data, errors }: Anvil.GraphQLResponse = await anvilClient.requestGraphQL(
+  const { data, errors } = await anvilClient.requestGraphQL(
     {
       query: currentUserQuery,
       variables,

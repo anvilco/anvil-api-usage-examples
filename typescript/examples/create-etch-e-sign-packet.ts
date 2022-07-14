@@ -30,21 +30,21 @@ import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
 // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-const apiKey: string = process.env['ANVIL_API_KEY'] ?? ''
+const apiKey = process.env['ANVIL_API_KEY'] ?? ''
 
 // The PDF template ID to fill. This PDF template ID is a sample template
 // available to anyone.
 //
 // See https://www.useanvil.com/help/tutorials/set-up-a-pdf-template for details
 // on setting up your own template
-const pdfTemplateID: string = '05xXsZko33JIO6aq5Pnr'
+const pdfTemplateID = '05xXsZko33JIO6aq5Pnr'
 
 // The second file is an NDA we'll upload and specify the field locations
-const fileUploadPath: string = path.join(__dirname, '..', '..', 'static', 'test-pdf-nda.pdf')
+const fileUploadPath = path.join(__dirname, '..', '..', 'static', 'test-pdf-nda.pdf')
 
 // Signer information
-const signerName: string = 'Testy Signer'
-const signerEmail: string = process.argv[2] ?? ''
+const signerName = 'Testy Signer'
+const signerEmail = process.argv[2] ?? ''
 
 if (!signerEmail) {
   console.log('Enter your email address as the script\'s 1st argument')
@@ -53,9 +53,9 @@ if (!signerEmail) {
 }
 
 async function createEtchPacket () {
-  const anvilClient: Anvil = new Anvil({ apiKey })
-  const ndaFile: Anvil.UploadWithOptions = Anvil.prepareGraphQLFile(fileUploadPath)
-  const variables: object = getPacketVariables(ndaFile)
+  const anvilClient = new Anvil({ apiKey })
+  const ndaFile = Anvil.prepareGraphQLFile(fileUploadPath)
+  const variables = getPacketVariables(ndaFile)
 
   console.log('Creating Etch e-sign packet...')
   const { statusCode, data, errors } : Anvil.GraphQLResponse = await anvilClient.createEtchPacket({
@@ -75,7 +75,7 @@ async function createEtchPacket () {
   }
 }
 
-function getPacketVariables (ndaFile: Anvil.UploadWithOptions): object {
+function getPacketVariables (ndaFile: Anvil.UploadWithOptions) {
   return {
     // Indicate the packet is all ready to send to the
     // signers. An email will be sent to the first signer.

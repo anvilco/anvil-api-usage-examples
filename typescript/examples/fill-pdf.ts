@@ -25,20 +25,20 @@ import run from '../lib/run'
 //
 // See https://www.useanvil.com/help/tutorials/set-up-a-pdf-template for details
 // on setting up your own template
-const pdfTemplateID: string = '05xXsZko33JIO6aq5Pnr'
+const pdfTemplateID = '05xXsZko33JIO6aq5Pnr'
 
 // Get your API key from your Anvil organization settings.
 // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-const apiKey: string = process.env['ANVIL_API_KEY'] ?? ''
+const apiKey = process.env['ANVIL_API_KEY'] ?? ''
 
-const outputFilepath: string = path.join(__dirname, '..', 'output', 'fill-output.pdf')
+const outputFilepath = path.join(__dirname, '..', 'output', 'fill-output.pdf')
 
 async function fillPDF () {
-  const anvilClient: Anvil = new Anvil({ apiKey })
-  const exampleData: Object = getExampleFillData()
+  const anvilClient = new Anvil({ apiKey })
+  const exampleData = getExampleFillData()
 
   console.log('Making fill request...')
-  const { statusCode, data, errors }: Anvil.RESTResponse = await anvilClient.fillPDF(pdfTemplateID, exampleData)
+  const { statusCode, data, errors } = await anvilClient.fillPDF(pdfTemplateID, exampleData)
   console.log('Finished! Status code:', statusCode) // => 200, 400, 404, etc
 
   if (statusCode === 200 && data) {
@@ -52,7 +52,7 @@ async function fillPDF () {
   }
 }
 
-function getExampleFillData (): object {
+function getExampleFillData () {
   // JSON data to fill the PDF
   return {
     title: 'My PDF Title',

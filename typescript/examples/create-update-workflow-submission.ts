@@ -31,11 +31,11 @@ import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
 // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-const apiKey: string = process.env['ANVIL_API_KEY'] ?? ''
+const apiKey = process.env['ANVIL_API_KEY'] ?? ''
 
 // Workflow information
-const weldSlug: string = 'sample-workflow'
-const organizationSlug: string = process.argv[2] ?? ''
+const weldSlug = 'sample-workflow'
+const organizationSlug = process.argv[2] ?? ''
 if (!organizationSlug) {
   console.log('Enter your organization\'s slug as the 1st argument')
   console.log(`Usage: yarn ts-node ${process.argv[1]} my-org`)
@@ -57,7 +57,7 @@ const updatePayload = {
 }
 
 async function createAndUpdateWorkflowSubmission () {
-  const anvilClient: Anvil = new Anvil({ apiKey })
+  const anvilClient = new Anvil({ apiKey })
 
   //
   // Find the workflow
@@ -139,19 +139,7 @@ async function submitToWorkflowWebform ({
 }: {
   anvilClient: Anvil,
   variables: Object
-}): Promise<{
-  eid: string,
-  createdAt: string,
-  updatedAt: string,
-  resolvedPayload: any,
-  weldData: {
-    eid: string,
-    displayTitle: string,
-    isTest: boolean,
-    createdAt: string,
-    updatedAt: string,
-  }
-}> {
+}): Promise<SubmissionResponse> {
   // Ref docs:
   // https://www.useanvil.com/docs/api/graphql/reference/#operation-forgesubmit-Mutations
   const responseQuery = `{
@@ -186,15 +174,7 @@ async function getWeld ({
   anvilClient: Anvil,
   weldSlug: string,
   organizationSlug: string,
-}): Promise<{
-  eid: string,
-  name: string,
-  forges: Array<{
-    eid: string,
-    slug: string,
-    name: string,
-  }>
-}> {
+}): Promise<WeldResponse> {
   // Ref docs:
   // https://www.useanvil.com/docs/api/graphql/reference/#operation-weld-Queries
   const weldQuery = `
@@ -260,6 +240,36 @@ function buildWorkflowSubmissionDetailsURL ({
 
 function formatJSON (jsonObj: Object | undefined) {
   return JSON.stringify(jsonObj, null, 2)
+}
+
+// GraphQL response interfaces
+
+interface WeldResponse {
+  eid: string,
+  name: string,
+  forges: Array<ForgeResponse>
+}
+
+interface ForgeResponse {
+  eid: string,
+  slug: string,
+  name: string,
+}
+
+interface SubmissionResponse {
+  eid: string,
+  createdAt: string,
+  updatedAt: string,
+  resolvedPayload: any,
+  weldData: WeldDataResponse
+}
+
+interface WeldDataResponse {
+  eid: string,
+  displayTitle: string,
+  isTest: boolean,
+  createdAt: string,
+  updatedAt: string,
 }
 
 run(createAndUpdateWorkflowSubmission)

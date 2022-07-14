@@ -24,14 +24,14 @@ import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
 // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-const apiKey: string = process.env['ANVIL_API_KEY'] ?? ''
+const apiKey = process.env['ANVIL_API_KEY'] ?? ''
 
-const outputFilepath: string = path.join(__dirname, '..', 'output', 'generate-html-output.pdf')
+const outputFilepath = path.join(__dirname, '..', 'output', 'generate-html-output.pdf')
 
 async function generateHTMLPDF () {
-  const anvilClient: Anvil = new Anvil({ apiKey })
-  const exampleData: object = getExampleHTMLToPDFData()
-  const { statusCode, data, errors }: Anvil.RESTResponse = await anvilClient.generatePDF(exampleData)
+  const anvilClient = new Anvil({ apiKey })
+  const exampleData = getExampleHTMLToPDFData()
+  const { statusCode, data, errors } = await anvilClient.generatePDF(exampleData)
 
   console.log('Making HTML PDF generation request...')
   console.log('Finished! Status code:', statusCode) // => 200, 400, 404, etc
@@ -47,7 +47,7 @@ async function generateHTMLPDF () {
   }
 }
 
-function getExampleHTMLToPDFData (): object {
+function getExampleHTMLToPDFData () {
   return {
     title: 'Example HTML to PDF',
     type: 'html',

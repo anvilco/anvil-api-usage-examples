@@ -22,14 +22,14 @@ import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
 // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-const apiKey: string = process.env['ANVIL_API_KEY'] ?? ''
+const apiKey = process.env['ANVIL_API_KEY'] ?? ''
 
-const outputFilepath: string = path.join(__dirname, '..', 'output', 'generate-markdown-output.pdf')
+const outputFilepath = path.join(__dirname, '..', 'output', 'generate-markdown-output.pdf')
 
 async function generateMarkdownPDF () {
-  const anvilClient: Anvil = new Anvil({ apiKey })
-  const exampleData: object = getExampleMarkdownToPDFData()
-  const { statusCode, data, errors }: Anvil.RESTResponse = await anvilClient.generatePDF(exampleData)
+  const anvilClient = new Anvil({ apiKey })
+  const exampleData = getExampleMarkdownToPDFData()
+  const { statusCode, data, errors } = await anvilClient.generatePDF(exampleData)
 
   console.log('Making Markdown PDF generation request...')
   console.log('Finished! Status code:', statusCode) // => 200, 400, 404, etc
