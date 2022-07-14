@@ -1,3 +1,4 @@
+import 'dotenv/config'
 
 // Run an async function and wait until it is finished.
 export default function run (fn: Function) {

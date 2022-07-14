@@ -6,7 +6,7 @@
 // This script is runnable as is, all you need to do is supply your own API key
 // in the ANVIL_API_KEY environment variable.
 //
-// ANVIL_API_KEY=<yourAPIKey> node examples/create-etch-e-sign-packet.js <your.real.email@ex.com>
+// yarn ts-node examples/create-etch-e-sign-packet.ts <your.real.email@ex.com>
 //
 // This script will create an e-sign packet with one signer and two documents.
 // Then it will send a signature request to the email you specified.
@@ -25,7 +25,6 @@
 
 import path from 'path'
 import Anvil from '@anvilco/anvil'
-import type UploadWithOptions from '@anvilco/anvil/types/src/UploadWithOptions'
 import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
@@ -52,28 +51,14 @@ if (!signerEmail) {
   process.exit(1)
 }
 
-interface GraphQLData {
-  data: {
-    [key: string]: any
-  }
-}
-
-interface GraphQLResponse {
-  statusCode: number,
-  data: GraphQLData,
-  errors: any[]
-}
-
 async function createEtchPacket () {
   const anvilClient: Anvil = new Anvil({ apiKey })
-  const ndaFile: UploadWithOptions = Anvil.prepareGraphQLFile(fileUploadPath, {})
+  const ndaFile: Anvil.UploadWithOptions = Anvil.prepareGraphQLFile(fileUploadPath)
   const variables: object = getPacketVariables(ndaFile)
 
   console.log('Creating Etch e-sign packet...')
-  const { statusCode,data, errors } : GraphQLResponse = await anvilClient.createEtchPacket({
+  const { statusCode, data, errors } : Anvil.GraphQLResponse = await anvilClient.createEtchPacket({
     variables,
-    mutation: undefined,
-    responseQuery: ''
   })
   console.log('Finished! Status code:', statusCode) // => 200, 400, 404, etc
 
@@ -83,13 +68,13 @@ async function createEtchPacket () {
     console.log('There were errors!')
     console.log(JSON.stringify(errors, null, 2))
   } else {
-    const packetDetails = data.data['createEtchPacket']
+    const packetDetails = data?.data['createEtchPacket']
     console.log('Visit the new packet on your dashboard:', packetDetails.detailsURL)
     console.log(JSON.stringify(packetDetails, null, 2))
   }
 }
 
-function getPacketVariables (ndaFile: UploadWithOptions) {
+function getPacketVariables (ndaFile: Anvil.UploadWithOptions) {
   return {
     // Indicate the packet is all ready to send to the
     // signers. An email will be sent to the first signer.
