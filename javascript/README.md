@@ -14,6 +14,14 @@ Welcome to Anvil API usage examples in JavaScript! There are [example scripts](e
 All scripts will require that you have an Anvil API key. See [the getting started documentation](https://www.useanvil.com/docs/api/getting-started) for help grabbing your API key.
 
 Each script is set up to be runnable with minimal input. Once you have an API key, you can clone this repo and run the example scripts from this directory.
+
+Once you have this repo cloned, cd into this `javascript` directory and install the dependencies:
+
+```sh
+cd javascript
+yarn install
+```
+
 Scripts will output filled and generated PDFs into the [output directory](output).
 
 [Fill a PDF template](examples/fill-pdf.js):
