@@ -4,7 +4,8 @@
 // * Anvil Node.js client: https://github.com/anvilco/node-anvil
 //
 // This script is runnable as is, all you need to do is supply your own API key
-// in the ANVIL_API_KEY environment variable.
+// in the ANVIL_API_KEY environment variable in the .env file at the root of the
+// typescript directory.
 //
 // yarn ts-node examples/create-etch-e-sign-packet.ts <your.real.email@ex.com>
 //
@@ -47,7 +48,7 @@ const signerEmail: string = process.argv[2] ?? ''
 
 if (!signerEmail) {
   console.log('Enter your email address as the script\'s 1st argument')
-  console.log(`Usage: node ${process.argv[1]} your.real.email@example.com`)
+  console.log(`Usage: yarn ts-node ${process.argv[1]} your.real.email@example.com`)
   process.exit(1)
 }
 
@@ -74,7 +75,7 @@ async function createEtchPacket () {
   }
 }
 
-function getPacketVariables (ndaFile: Anvil.UploadWithOptions) {
+function getPacketVariables (ndaFile: Anvil.UploadWithOptions): object {
   return {
     // Indicate the packet is all ready to send to the
     // signers. An email will be sent to the first signer.

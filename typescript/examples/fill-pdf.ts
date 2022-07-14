@@ -4,45 +4,44 @@
 // * Anvil Node.js client: https://github.com/anvilco/node-anvil
 //
 // This script is runnable as is, all you need to do is supply your own API key
-// in the ANVIL_API_KEY environment variable. By default this script fills a
-// global sample template.
+// in the ANVIL_API_KEY environment variable in the .env file at the root of the
+// typescript directory. By default this script fills a global sample template.
 //
-// ANVIL_API_KEY=<yourAPIKey> node examples/fill-pdf.js
+// yarn ts-node examples/fill-pdf.ts
 //
 // The filled PDF will be saved to `output/fill-output.pdf`. You can open the
 // filled PDF immediately after saving the file on OSX machines with the
 // `open` command:
 //
-// ANVIL_API_KEY=<yourAPIKey> node examples/fill-pdf.js && open output/fill-output.pdf
+// yarn ts-node examples/fill-pdf.ts && open output/fill-output.pdf
 
-const fs = require('fs')
-const path = require('path')
-const Anvil = require('@anvilco/anvil')
-
-const run = require('../lib/run')
+import fs from 'fs'
+import path from 'path'
+import Anvil from '@anvilco/anvil'
+import run from '../lib/run'
 
 // The PDF template ID to fill. This PDF template ID is a sample template
 // available to anyone.
 //
 // See https://www.useanvil.com/help/tutorials/set-up-a-pdf-template for details
 // on setting up your own template
-const pdfTemplateID = '05xXsZko33JIO6aq5Pnr'
+const pdfTemplateID: string = '05xXsZko33JIO6aq5Pnr'
 
 // Get your API key from your Anvil organization settings.
 // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-const apiKey = process.env.ANVIL_API_KEY
+const apiKey: string = process.env['ANVIL_API_KEY'] ?? ''
 
-const outputFilepath = path.join(__dirname, '..', 'output', 'fill-output.pdf')
+const outputFilepath: string = path.join(__dirname, '..', 'output', 'fill-output.pdf')
 
 async function fillPDF () {
-  const anvilClient = new Anvil({ apiKey })
-  const exampleData = getExampleFillData()
+  const anvilClient: Anvil = new Anvil({ apiKey })
+  const exampleData: Object = getExampleFillData()
 
   console.log('Making fill request...')
-  const { statusCode, data, errors } = await anvilClient.fillPDF(pdfTemplateID, exampleData)
+  const { statusCode, data, errors }: Anvil.RESTResponse = await anvilClient.fillPDF(pdfTemplateID, exampleData)
   console.log('Finished! Status code:', statusCode) // => 200, 400, 404, etc
 
-  if (statusCode === 200) {
+  if (statusCode === 200 && data) {
     // `data` will be the filled PDF binary data. It is important that the
     // data is saved with no encoding! Otherwise the PDF file will be corrupt.
     fs.writeFileSync(outputFilepath, data, { encoding: null })
@@ -53,7 +52,7 @@ async function fillPDF () {
   }
 }
 
-function getExampleFillData () {
+function getExampleFillData (): object {
   // JSON data to fill the PDF
   return {
     title: 'My PDF Title',

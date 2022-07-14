@@ -4,12 +4,13 @@
 // * Anvil Node.js client: https://github.com/anvilco/node-anvil
 //
 // This script is runnable as is, all you need to do is supply your own API key
-// in the ANVIL_API_KEY environment variable.
+// in the ANVIL_API_KEY environment variable in the .env file at the root of the
+// typescript directory.
 //
 // By default the script uses the sample workflow in your organization when you
 // signed up for an Anvil account.
 //
-// ANVIL_API_KEY=<yourAPIKey> node examples/create-update-workflow-submission.js <my-org-slug>
+// yarn ts-node examples/create-update-workflow-submission.ts <my-org-slug>
 //
 // The script will:
 //
@@ -25,22 +26,19 @@
 // Objects within Workflows have their own terminology. See the following for
 // more info: https://www.useanvil.com/docs/api/getting-started#terminology
 
-const fs = require('fs')
-const path = require('path')
-const Anvil = require('@anvilco/anvil')
-
-const run = require('../lib/run')
+import Anvil from '@anvilco/anvil'
+import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
 // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-const apiKey = process.env.ANVIL_API_KEY
+const apiKey: string = process.env['ANVIL_API_KEY'] ?? ''
 
 // Workflow information
-const weldSlug = 'sample-workflow'
-const organizationSlug = process.argv[2]
+const weldSlug: string = 'sample-workflow'
+const organizationSlug: string = process.argv[2] ?? ''
 if (!organizationSlug) {
   console.log('Enter your organization\'s slug as the 1st argument')
-  console.log(`Usage: node ${process.argv[1]} my-org`)
+  console.log(`Usage: yarn ts-node ${process.argv[1]} my-org`)
   process.exit(1)
 }
 
@@ -59,7 +57,7 @@ const updatePayload = {
 }
 
 async function createAndUpdateWorkflowSubmission () {
-  const anvilClient = new Anvil({ apiKey })
+  const anvilClient: Anvil = new Anvil({ apiKey })
 
   //
   // Find the workflow
@@ -81,6 +79,8 @@ async function createAndUpdateWorkflowSubmission () {
   // Now we get the workflow's first webform to start the workflow
   // Webforms are `Forge` objects in Anvil's system
   const startForge = weld.forges[0]
+  if (!startForge) throw new Error('No forge found!')
+
   console.log(`>>> Starting workflow with webform`, formatJSON(startForge))
 
   // Start the workflow by submitting data to the webform of your choice. You
@@ -133,7 +133,25 @@ async function createAndUpdateWorkflowSubmission () {
 
 // This function will submit data to a Workflow's Webform. In our system these
 // objects are called Weld (Workflow), and Forge (webform).
-async function submitToWorkflowWebform ({ anvilClient, variables }) {
+async function submitToWorkflowWebform ({
+  anvilClient,
+  variables,
+}: {
+  anvilClient: Anvil,
+  variables: Object
+}): Promise<{
+  eid: string,
+  createdAt: string,
+  updatedAt: string,
+  resolvedPayload: any,
+  weldData: {
+    eid: string,
+    displayTitle: string,
+    isTest: boolean,
+    createdAt: string,
+    updatedAt: string,
+  }
+}> {
   // Ref docs:
   // https://www.useanvil.com/docs/api/graphql/reference/#operation-forgesubmit-Mutations
   const responseQuery = `{
@@ -149,18 +167,34 @@ async function submitToWorkflowWebform ({ anvilClient, variables }) {
       updatedAt
     }
   }`
-  const { data, errors } = await anvilClient.forgeSubmit({ variables, responseQuery })
+  const { data, errors }: Anvil.GraphQLResponse = await anvilClient.forgeSubmit({ variables, responseQuery })
   if (errors) {
     console.log(formatJSON(errors))
     throw new Error('There were errors submitting to the workflow')
   }
-  return data.data.forgeSubmit
+  return data?.data['forgeSubmit']
 }
 
 
 // We need some information from the workflow, so we will fetch it from your
 // account before we can submit data to it.
-async function getWeld ({anvilClient, weldSlug, organizationSlug}) {
+async function getWeld ({
+  anvilClient,
+  weldSlug,
+  organizationSlug,
+}: {
+  anvilClient: Anvil,
+  weldSlug: string,
+  organizationSlug: string,
+}): Promise<{
+  eid: string,
+  name: string,
+  forges: Array<{
+    eid: string,
+    slug: string,
+    name: string,
+  }>
+}> {
   // Ref docs:
   // https://www.useanvil.com/docs/api/graphql/reference/#operation-weld-Queries
   const weldQuery = `
@@ -186,7 +220,7 @@ async function getWeld ({anvilClient, weldSlug, organizationSlug}) {
   `
 
   const variables = { slug: weldSlug, organizationSlug }
-  const { data, errors } = await anvilClient.requestGraphQL(
+  const { data, errors }: Anvil.GraphQLResponse = await anvilClient.requestGraphQL(
     {
       query: weldQuery,
       variables,
@@ -200,7 +234,7 @@ async function getWeld ({anvilClient, weldSlug, organizationSlug}) {
   }
 
   // Need to make sure it has webforms!
-  const { weld } = data.data
+  const { weld } = data?.data ?? {}
   if (weld.forges.length < 1) {
     throw new Error(`Weld ${organizationSlug}/${weldSlug} has no webforms!`)
   }
@@ -212,11 +246,19 @@ async function getWeld ({anvilClient, weldSlug, organizationSlug}) {
 // Utilities
 
 // Returns a URL where you can see the submission on your Anvil dashboard
-function buildWorkflowSubmissionDetailsURL ({ organizationSlug, weldSlug, weldDataEid }) {
+function buildWorkflowSubmissionDetailsURL ({
+  organizationSlug,
+  weldSlug,
+  weldDataEid
+}: {
+  organizationSlug: string,
+  weldSlug: string,
+  weldDataEid: string
+}) {
   return `https://app.useanvil.com/org/${organizationSlug}/w/${weldSlug}/${weldDataEid}`
 }
 
-function formatJSON (jsonObj) {
+function formatJSON (jsonObj: Object | undefined) {
   return JSON.stringify(jsonObj, null, 2)
 }
 

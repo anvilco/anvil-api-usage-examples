@@ -26,10 +26,6 @@
     "outDir": "dist"
   },
   "include": [
-    "./examples/create-etch-e-sign-packet.ts",
-    "./lib/**/*",
-  ],
-  "includeREAL": [
     "./examples/**/*",
     "./lib/**/*",
   ]

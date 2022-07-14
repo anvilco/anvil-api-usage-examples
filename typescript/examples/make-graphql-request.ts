@@ -8,21 +8,20 @@
 // * Anvil Node.js client: https://github.com/anvilco/node-anvil
 //
 // This script is runnable as is, all you need to do is supply your own API key
-// in the ANVIL_API_KEY environment variable.
+// in the ANVIL_API_KEY environment variable in the .env file at the root of the
+// typescript directory.
 //
-// ANVIL_API_KEY=<yourAPIKey> node examples/make-graphql-request.js
+// yarn ts-node examples/make-graphql-request.ts
 
-const fs = require('fs')
-const Anvil = require('@anvilco/anvil')
-
-const run = require('../lib/run')
+import Anvil from '@anvilco/anvil'
+import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
 // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-const apiKey = process.env.ANVIL_API_KEY
+const apiKey: string = process.env['ANVIL_API_KEY'] ?? ''
 
 async function callQueries () {
-  const anvilClient = new Anvil({ apiKey })
+  const anvilClient: Anvil = new Anvil({ apiKey })
   const currentUser = await callCurrentUserQuery({ anvilClient })
   console.log('currentUser:', JSON.stringify(currentUser, null, 2))
 
@@ -36,7 +35,7 @@ async function callQueries () {
 }
 
 // The currentUser query takes no variables
-async function callCurrentUserQuery ({ anvilClient }) {
+async function callCurrentUserQuery ({ anvilClient }: { anvilClient: Anvil }) {
   // See the reference docs for examples of all queries and mutations:
   // https://www.useanvil.com/docs/api/graphql/reference/
   //
@@ -64,7 +63,7 @@ async function callCurrentUserQuery ({ anvilClient }) {
   `
 
   const variables = {}
-  const { data, errors } = await anvilClient.requestGraphQL(
+  const { data, errors }: Anvil.GraphQLResponse = await anvilClient.requestGraphQL(
     {
       query: currentUserQuery,
       variables,
@@ -78,11 +77,11 @@ async function callCurrentUserQuery ({ anvilClient }) {
     console.log(JSON.stringify(errors, null, 2))
     throw new Error('There were errors fetching the current user')
   }
-  return data.data.currentUser
+  return data?.data?.['currentUser'] || {}
 }
 
 // The weld() query is an example of a query that takes variables
-async function callWeldQuery ({ anvilClient, weldEid }) {
+async function callWeldQuery ({ anvilClient, weldEid }: { anvilClient: Anvil, weldEid: string }) {
   const currentUserQuery = `
     query WeldQuery (
       $eid: String,
@@ -102,7 +101,7 @@ async function callWeldQuery ({ anvilClient, weldEid }) {
   `
 
   const variables = { eid: weldEid }
-  const { data, errors } = await anvilClient.requestGraphQL(
+  const { data, errors }: Anvil.GraphQLResponse = await anvilClient.requestGraphQL(
     {
       query: currentUserQuery,
       variables,
@@ -116,7 +115,7 @@ async function callWeldQuery ({ anvilClient, weldEid }) {
     console.log(JSON.stringify(errors, null, 2))
     throw new Error('There were errors fetching the current user')
   }
-  return data.data.weld
+  return data?.data?.['weld'] || {}
 }
 
 run(callQueries)

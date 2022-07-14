@@ -6,33 +6,32 @@
 //   https://github.com/anvilco/html-pdf-invoice-template
 //
 // This script is runnable as is, all you need to do is supply your own API key
-// in the ANVIL_API_KEY environment variable.
+// in the ANVIL_API_KEY environment variable in the .env file at the root of the
+// typescript directory.
 //
-// ANVIL_API_KEY=<yourAPIKey> node examples/generate-html-to-pdf.js
+// yarn ts-node examples/generate-html-to-pdf.ts
 //
 // The filled PDF will be saved to `output/generate-html-output.pdf`. You can
 // open the filled PDF immediately after saving the file on OSX machines with
 // the `open` command:
 //
-// ANVIL_API_KEY=<yourAPIKey> \
-//   node examples/generate-html-to-pdf.js && open output/generate-html-output.pdf
+// yarn ts-node examples/generate-html-to-pdf.ts && open output/generate-html-output.pdf
 
-const fs = require('fs')
-const path = require('path')
-const Anvil = require('@anvilco/anvil')
-
-const run = require('../lib/run')
+import fs from 'fs'
+import path from 'path'
+import Anvil from '@anvilco/anvil'
+import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
 // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-const apiKey = process.env.ANVIL_API_KEY
+const apiKey: string = process.env['ANVIL_API_KEY'] ?? ''
 
-const outputFilepath = path.join(__dirname, '..', 'output', 'generate-html-output.pdf')
+const outputFilepath: string = path.join(__dirname, '..', 'output', 'generate-html-output.pdf')
 
 async function generateHTMLPDF () {
-  const anvilClient = new Anvil({ apiKey })
-  const exampleData = getExampleHTMLToPDFData()
-  const { statusCode, data, errors } = await anvilClient.generatePDF(exampleData)
+  const anvilClient: Anvil = new Anvil({ apiKey })
+  const exampleData: object = getExampleHTMLToPDFData()
+  const { statusCode, data, errors }: Anvil.RESTResponse = await anvilClient.generatePDF(exampleData)
 
   console.log('Making HTML PDF generation request...')
   console.log('Finished! Status code:', statusCode) // => 200, 400, 404, etc
@@ -48,7 +47,7 @@ async function generateHTMLPDF () {
   }
 }
 
-function getExampleHTMLToPDFData () {
+function getExampleHTMLToPDFData (): object {
   return {
     title: 'Example HTML to PDF',
     type: 'html',
