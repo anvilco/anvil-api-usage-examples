@@ -29,6 +29,7 @@ Each language directory will have example scripts for the following common API a
 All supported languages have a directory at the root of this repo.
 
 * [JavaScript](/javascript)
+* [TypeScript](/typescript)
 
 ## License
 
