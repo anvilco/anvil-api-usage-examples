@@ -7,8 +7,7 @@
 # https://github.com/anvilco/html-pdf-invoice-template
 #
 # This script is runnable as is, all you need to do is supply your own API key
-# in the ANVIL_API_KEY environment variable. By default, this script fills a
-# global sample template.
+# in the ANVIL_API_KEY environment variable.
 #
 # ANVIL_API_KEY=<yourAPIKey> python examples/generate-html-to-pdf.py
 #
