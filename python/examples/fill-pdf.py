@@ -1,10 +1,11 @@
 # Example: Fill a PDF via the Anvil API
 #
 # * PDF filling API docs: https://www.useanvil.com/docs/api/fill-pdf
-# * Anvil Node.js client: https://github.com/anvilco/node-anvil
+# * Anvil Python client: https://github.com/anvilco/python-anvil/
+# * Anvil Python docs: https://python-anvil.readthedocs.io/
 #
 # This script is runnable as is, all you need to do is supply your own API key
-# in the ANVIL_API_KEY environment variable. By default this script fills a
+# in the ANVIL_API_KEY environment variable. By default, this script fills a
 # global sample template.
 #
 # ANVIL_API_KEY=<yourAPIKey> python examples/fill-pdf.py
@@ -13,28 +14,31 @@
 # filled PDF immediately after saving the file on OSX machines with the
 # `open` command:
 #
-# ANVIL_API_KEY=<yourAPIKey> node examples/fill-pdf.js && open output/fill-output.pdf
+# ANVIL_API_KEY=<yourAPIKey> python examples/fill-pdf.py && open output/fill-output.pdf
 
 import os
 from python_anvil.api import Anvil
+from ..lib.helpers import get_output_file_path
 
 # Get your API key from your Anvil organization settings.
 # See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
 API_KEY = os.environ.get("ANVIL_API_KEY")
 
-FILE_OUTPUT = os.path.join(os.getcwd(), '..', 'output', 'fill-output.pdf')
+FILE_OUTPUT = get_output_file_path(__file__, 'fill-output.pdf')
 
 # The PDF template ID to fill. This PDF template ID is a sample template
 # available to anyone.
 #
 # See https://www.useanvil.com/help/tutorials/set-up-a-pdf-template for details
 # on setting up your own template
-PDF_TEMPLATE_EID = "28WNc9WkZLC1TDaIYLPS"
+PDF_TEMPLATE_EID = "f9eQzbUgCCRVDrd4gt8b"
 
 # PDF fill data can be an instance of `FillPDFPayload` or a plain dict.
 # `FillPDFPayload` is from `python_anvil.api_resources.payload import FillPDFPayload`.
 # Keep in mind that, if using a plain dict, that the keys are in typical
 # Python snake_case with underscores, and not camelCase.
+# If you'd like to use camelCase on all data, you can call `Anvil.fill_pdf()`
+# with a full JSON payload instead.
 FILL_DATA = {
     'title': 'My PDF Title',
     'font_size': 10,
@@ -83,8 +87,6 @@ def main():
 
     # `data` will be the filled PDF binary data. It is important that the
     # data is saved with no encoding! Otherwise, the PDF file will be corrupt.
-    # fs.writeFileSync(outputFilepath, data, { encoding: null })
-    # console.log('Filled PDF saved to:', outputFilepath)
     res = anvil.fill_pdf(PDF_TEMPLATE_EID, FILL_DATA)
 
     # Write the bytes to disk
