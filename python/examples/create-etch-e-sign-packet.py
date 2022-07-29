@@ -109,7 +109,6 @@ def get_file_payloads(file_path):
     # For this example, the PDF hasn't been uploaded to Anvil yet, so we need
     # to: open the file, upload the file as a base64 encoded payload along with
     # some data about where the user should sign.
-    b64file = None
     with open(file_path, "rb") as f:
         b64file = base64.b64encode(f.read())
 
@@ -197,53 +196,37 @@ def build_packet_payload(file_path: str, signer_name: str, signer_email: str):
     # Add signer(s) afterwards
     packet.add_signer(signer1)
 
+    # The file payload key here needs to match the file payload id
+    # given in `get_file_payloads`
+    packet.add_file_payloads("sampleTemplate", dict(
+        data=dict(
+            name=signer_name,
+            email=signer_email,
+            ssn='456454567',
+            ein='897654321',
+            usAddress=dict(
+                street1='123 Main St #234',
+                city='San Francisco',
+                state='CA',
+                zip='94106',
+                country='US',
+            ),
+        )
+    ))
+
+    packet.add_file_payloads("fileUploadNDA", dict(
+        font_size=8,
+        text_color="#0000CC",
+        data=dict(
+            # The IDs here match the fields we created in the
+            # files property above
+            recipientName=signer_name,
+            recipientSignatureName=signer_name,
+            recipientEmail=signer_email,
+        )
+    ))
+
     return packet
-
-
-"""
-function getPacketVariables (ndaFile) {
-  return {
-
-    data: {
-      // This data will fill the PDF before it's sent to any signers.
-      // IDs here were set up on each field while templatizing the PDF.
-      payloads: {
-        // 'sampleTemplate' is the sample template ID specified above
-        sampleTemplate: {
-          data: {
-            name: signerName,
-            email: signerEmail,
-            ssn: '456454567',
-            ein: '897654321',
-            usAddress: {
-              street1: '123 Main St #234',
-              city: 'San Francisco',
-              state: 'CA',
-              zip: '94106',
-              country: 'US',
-            },
-          },
-        },
-
-        // 'fileUploadNDA' is the NDA's file ID specified above
-        fileUploadNDA: {
-          fontSize: 8,
-          textColor: '#0000CC',
-          data: {
-            // The IDs here match the fields we created in the
-            // files property above
-            recipientName: signerName,
-            recipientSignatureName: signerName,
-            recipientEmail: signerEmail,
-          },
-        },
-      },
-    },
-
-
-  }
-}
-"""
 
 
 def create_etch_packet():
