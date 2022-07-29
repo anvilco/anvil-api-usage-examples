@@ -87,7 +87,6 @@ def submit_to_workflow_webform(anvil: Anvil, variables: dict):
     # objects are called Weld (Workflow), and Forge (webform).
     # Ref docs:
     # https://www.useanvil.com/docs/api/graphql/reference/#operation-forgesubmit-Mutations
-
     res = anvil.query(
         FORGE_SUBMIT.format(query=FORGE_SUBMIT_RESPONSE_QUERY),
         variables=variables,
