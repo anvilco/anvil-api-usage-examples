@@ -32,6 +32,11 @@ import json
 from datetime import datetime
 from python_anvil.api import Anvil
 
+from forge_submit import (
+    FORGE_SUBMIT,
+    DEFAULT_RESPONSE_QUERY as FORGE_SUBMIT_RESPONSE_QUERY
+)
+
 # Get your API key from your Anvil organization settings.
 # See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
 API_KEY = os.environ.get("ANVIL_API_KEY")
@@ -83,24 +88,11 @@ def submit_to_workflow_webform(anvil: Anvil, variables: dict):
     # Ref docs:
     # https://www.useanvil.com/docs/api/graphql/reference/#operation-forgesubmit-Mutations
 
-    response_query = """
-    {
-        eid
-        createdAt
-        updatedAt
-        resolvedPayload
-        weldData {
-          eid
-          displayTitle
-          isTest
-          createdAt
-          updatedAt
-        }
-    }
-    """
+    res = anvil.query(
+        FORGE_SUBMIT.format(query=FORGE_SUBMIT_RESPONSE_QUERY),
+        variables=variables,
+    )
 
-    # TODO: Create this
-    res = anvil.forge_submit(variables=variables, response_query=response_query)
     return res["data"]["forgeSubmit"]
 
 
@@ -174,7 +166,7 @@ def create_and_update_workflow_submission(org_slug: str, weld_slug: str):
 
 
 def build_workflow_submission_details_url(org_slug, weld_slug, weld_data_eid):
-    return f"https://app.useanvil.com/org/{org_slug}/w/${weld_slug}/{weld_data_eid}"
+    return f"https://app.useanvil.com/org/{org_slug}/w/{weld_slug}/{weld_data_eid}"
 
 
 def run():
