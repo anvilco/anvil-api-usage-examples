@@ -96,6 +96,8 @@ Commands:
   weld                Fetch weld info or list of welds.
 ```
 
+### Running the examples
+
 Scripts will output filled and generated PDFs into the [output directory](output).
 
 [Fill a PDF template](examples/fill-pdf.py):
