@@ -1,6 +1,8 @@
 /*
 Anvil Community Contribution
 Author: @dhildreth
+
+Description: Decrypt Anvil payload in PHP using Anvil provided RSA and AES keys
 */
 
 <?php
