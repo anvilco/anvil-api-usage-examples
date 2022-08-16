@@ -35,8 +35,9 @@ PDF_TEMPLATE_EID = "f9eQzbUgCCRVDrd4gt8b"
 
 # PDF fill data can be an instance of `FillPDFPayload` or a plain dict.
 # `FillPDFPayload` is from `python_anvil.api_resources.payload import FillPDFPayload`.
-# Keep in mind that, if using a plain dict, that the keys are in typical
-# Python snake_case with underscores, and not camelCase.
+# If using a plain dict, fill data keys can be either Python snake_case with
+# underscores, or in camelCase. Note, though, that the keys in `data` must
+# match the keys on the form. This is usually in camelCase.
 # If you'd like to use camelCase on all data, you can call `Anvil.fill_pdf()`
 # with a full JSON payload instead.
 FILL_DATA = {
