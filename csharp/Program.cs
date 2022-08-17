@@ -29,6 +29,11 @@ public class Program
         {
             Name = "generate-markdown-to-pdf",
             Klass = typeof(GenerateMarkdownToPdf),
+        },
+        new ProgramItem()
+        {
+            Name = "create-etch-packet",
+            Klass = typeof(CreateEtchESignPacket),
         }
     };
 
@@ -38,12 +43,21 @@ public class Program
         // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
         var apiKey = Environment.GetEnvironmentVariable("ANVIL_API_KEY");
         var programToRun = args[0];
+        var otherArgs = args[1];
 
         var found = programsList.Find(obj => obj.Name.Equals(programToRun));
         if (found != null)
         {
             var runnable = (RunnableBaseExample) Activator.CreateInstance(found.Klass, apiKey);
-            await runnable.Run(apiKey);
+
+            if (otherArgs == null)
+            {
+                await runnable.Run(apiKey);
+            }
+            else
+            {
+                await runnable.Run(apiKey, otherArgs);
+            }
         }
         else
         {

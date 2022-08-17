@@ -18,4 +18,9 @@ abstract class RunnableBaseExample : IBaseExample
     {
         throw new NotImplementedException();
     }
+
+    public virtual Task Run(string apiKey, string otherArg)
+    {
+        throw new NotImplementedException();
+    }
 }
