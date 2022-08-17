@@ -34,6 +34,11 @@ public class Program
         {
             Name = "create-etch-packet",
             Klass = typeof(CreateEtchESignPacket),
+        },
+        new ProgramItem()
+        {
+            Name = "create-update-workflow",
+            Klass = typeof(CreateEtchESignPacket),
         }
     };
 

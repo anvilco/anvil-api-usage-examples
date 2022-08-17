@@ -20,7 +20,8 @@
 using Anvil.Client;
 using Anvil.Payloads.Request;
 using Anvil.Payloads.Request.Types;
-using AnvilExamples;
+
+namespace AnvilExamples;
 
 class GenerateHtmlToPdf : RunnableBaseExample
 {

@@ -15,7 +15,8 @@
 // ANVIL_API_KEY=<yourAPIKey> dotnet run fill-pdf && open output/fill-output.pdf
 
 using Anvil.Client;
-using AnvilExamples;
+
+namespace AnvilExamples;
 
 class FillPDF : RunnableBaseExample
 {

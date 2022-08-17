@@ -25,9 +25,9 @@
 
 using Anvil.Client;
 using Anvil.Payloads.Request.Types;
-using AnvilExamples;
 using CreateEtchPacket = Anvil.Payloads.Request.CreateEtchPacket;
 
+namespace AnvilExamples;
 
 class CreateEtchESignPacket : RunnableBaseExample
 {

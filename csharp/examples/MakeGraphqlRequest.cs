@@ -13,9 +13,10 @@
 // ANVIL_API_KEY=<yourAPIKey> dotnet run make-graphql-request
 
 using Anvil.Client;
-using AnvilExamples;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
+namespace AnvilExamples;
 
 class MakeGraphqlRequest : RunnableBaseExample
 {
