@@ -1,8 +1,4 @@
-﻿using Anvil.Client;
-using AnvilExamples;
-using Newtonsoft.Json.Linq;
-
-// Example: Fill a PDF via the Anvil API
+﻿// Example: Fill a PDF via the Anvil API
 //
 // * PDF filling API docs: https://www.useanvil.com/docs/api/fill-pdf
 // * Anvil C#/.NET client: https://www.nuget.org/packages/Anvil/
@@ -18,32 +14,11 @@ using Newtonsoft.Json.Linq;
 //
 // ANVIL_API_KEY=<yourAPIKey> dotnet run fill-pdf && open output/fill-output.pdf
 
+using Anvil.Client;
+using AnvilExamples;
+
 class FillPDF : RunnableBaseExample
 {
-    static async Task<JObject> CallCurrentUserQuery(GraphQLClient client)
-    {
-        var query = @"query CurrentUser {
-            currentUser {
-                eid
-                name
-                organizations {
-                    eid
-                    slug
-                    name
-                    casts {
-                        eid
-                        name
-                    }
-                    welds {
-                        eid
-                        name
-                    }
-                }
-            }
-        }";
-        return await client.SendQuery(query, null);
-    }
-
     private Anvil.Payloads.Request.FillPdf GetFillData()
     {
         // The `FillPdf` type contains the available options you can use

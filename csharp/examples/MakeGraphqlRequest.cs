@@ -1,9 +1,4 @@
-﻿using Anvil.Client;
-using AnvilExamples;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-// Example: Make an arbitrary GraphQL request to the Anvil API
+﻿// Example: Make an arbitrary GraphQL request to the Anvil API
 //
 // Feel free to copy and paste queries and mutations from the GraphQL reference
 // docs into the functions in this script.
@@ -16,6 +11,11 @@ using Newtonsoft.Json.Linq;
 // in the ANVIL_API_KEY environment variable.
 //
 // ANVIL_API_KEY=<yourAPIKey> dotnet run make-graphql-request
+
+using Anvil.Client;
+using AnvilExamples;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 class MakeGraphqlRequest : RunnableBaseExample
 {
