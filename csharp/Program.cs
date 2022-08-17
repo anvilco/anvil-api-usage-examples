@@ -24,6 +24,11 @@ public class Program
         {
             Name = "generate-html-to-pdf",
             Klass = typeof(GenerateHtmlToPdf),
+        },
+        new ProgramItem()
+        {
+            Name = "generate-markdown-to-pdf",
+            Klass = typeof(GenerateMarkdownToPdf),
         }
     };
 
