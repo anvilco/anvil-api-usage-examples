@@ -3,7 +3,6 @@ using AnvilExamples;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-
 // Example: Make an arbitrary GraphQL request to the Anvil API
 //
 // Feel free to copy and paste queries and mutations from the GraphQL reference
@@ -11,7 +10,7 @@ using Newtonsoft.Json.Linq;
 //
 // * GraphQL guide: https://www.useanvil.com/docs/api/graphql
 // * GraphQL ref docs: https://www.useanvil.com/docs/api/graphql/reference
-// * Anvil Node.js client: https://www.nuget.org/packages/Anvil/
+// * Anvil C#/.NET client: https://www.nuget.org/packages/Anvil/
 //
 // This example is runnable as is, all you need to do is supply your own API key
 // in the ANVIL_API_KEY environment variable.
