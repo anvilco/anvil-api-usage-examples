@@ -19,6 +19,11 @@ public class Program
         {
             Name = "make-graphql-request",
             Klass = typeof(MakeGraphqlRequest),
+        },
+        new ProgramItem()
+        {
+            Name = "generate-html-to-pdf",
+            Klass = typeof(GenerateHtmlToPdf),
         }
     };
 
