@@ -1,62 +1,43 @@
-﻿using System.Runtime.CompilerServices;
-using Anvil.Client;
-using Newtonsoft.Json.Linq;
+namespace AnvilExamples;
 
-class Program
+public class ProgramItem
 {
-    static async Task<JObject> CallCurrentUserQuery(GraphQLClient client)
-    {
-        var query = @"query CurrentUser {
-            currentUser {
-                eid
-                name
-                organizations {
-                    eid
-                    slug
-                    name
-                    casts {
-                        eid
-                        name
-                    }
-                    welds {
-                        eid
-                        name
-                    }
-                }
-            }
-        }";
-        return await client.SendQuery(query, null);
-    }
+    public string Name { get; set; }
+    public Type Klass { get; set; }
+}
 
-    static async Task<JObject> CallWeldQuery(GraphQLClient client, string weldEid)
+public class Program
+{
+    private static List<ProgramItem> programsList = new()
     {
-        var query = @"
-            query WeldQuery (
-                $eid: String,
-            ) {
-                weld (
-                    eid: $eid,
-                ) {
-                    eid
-                    name
-                    forges {
-                        eid
-                        slug
-                        name
-                    }
-                }
-            }";
-        return await client.SendQuery(query, new {eid = weldEid});
-    }
+        new ProgramItem()
+        {
+            Name = "fill-pdf",
+            Klass = typeof(FillPDF)
+        },
+        new ProgramItem()
+        {
+            Name = "make-graphql-request",
+            Klass = typeof(MakeGraphqlRequest),
+        }
+    };
 
-    static async Task Main(string[] args)
+    public static async Task Main(string[] args)
     {
+        // Get your API key from your Anvil organization settings.
+        // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
         var apiKey = Environment.GetEnvironmentVariable("ANVIL_API_KEY");
-        var client = new GraphQLClient(apiKey);
-        var userResponse = await CallCurrentUserQuery(client);
-        var firstWeld = userResponse["currentUser"]["organizations"][0]["welds"][0];
-        var weldResponse = await CallWeldQuery(client, (string) firstWeld["eid"]);
+        var programToRun = args[0];
 
-        Console.WriteLine(weldResponse);
+        var found = programsList.Find(obj => obj.Name.Equals(programToRun));
+        if (found != null)
+        {
+            var runnable = (RunnableBaseExample) Activator.CreateInstance(found.Klass, apiKey);
+            await runnable.Run(apiKey);
+        }
+        else
+        {
+            Console.WriteLine("Example not found");
+        }
     }
 }
