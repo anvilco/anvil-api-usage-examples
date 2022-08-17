@@ -62,69 +62,69 @@ class CreateEtchESignPacket : RunnableBaseExample
 
             // Use this type for PDFs when you're uploading PDFs to be signed.
             // You must also provide field coordinates for where the user signs.
-            // new DocumentUpload()
-            // {
-            //     // This is a file we will upload and specify the fields ourselves
-            //     Id = "fileUploadNDA",
-            //     Title = "Demo NDA",
-            //     // The file to be uploaded. 
-            //     // This should be the file base64 encoded.
-            //     File = new Base64FileUpload()
-            //     {
-            //         Filename = "demo-nda.pdf",
-            //         Data = GetFileB64Bytes(filePath),
-            //     },
-            //     Fields = new List<SignatureField>
-            //     {
-            //         new()
-            //         {
-            //             Id = "recipientName",
-            //             Type = "fullName",
-            //             Rect = new Rect
-            //             {
-            //                 X = 223,
-            //                 Y = 120,
-            //                 Height = 12,
-            //                 Width = 140
-            //             },
-            //             PageNum = 0,
-            //         },
-            //         new()
-            //         {
-            //             Id = "recipientEmail",
-            //             Type = "email",
-            //             Rect = new Rect
-            //             {
-            //                 X = 367,
-            //                 Y = 120,
-            //                 Height = 12,
-            //                 Width = 166,
-            //             },
-            //             PageNum = 0,
-            //         },
-            //         new()
-            //         {
-            //             Id = "recipientSignatureName",
-            //             Type = "fullName",
-            //             Rect = new Rect {X = 107, Y = 374, Height = 22, Width = 157},
-            //             PageNum = 1,
-            //         },
-            //         new()
-            //         {
-            //             Id = "recipientSignature",
-            //             Type = "signature",
-            //             Rect = new Rect {X = 270, Y = 374, Height = 22, Width = 142},
-            //             PageNum = 1,
-            //         },
-            //         new()
-            //         {
-            //             Id = "recipientSignatureDate",
-            //             Type = "signatureDate",
-            //             Rect = new Rect {X = 419, Y = 374, Height = 22, Width = 80},
-            //             PageNum = 1,
-            //         },
-            //     }
-            // }
+            new DocumentUpload()
+            {
+                // This is a file we will upload and specify the fields ourselves
+                Id = "fileUploadNDA",
+                Title = "Demo NDA",
+                // The file to be uploaded.
+                // This should be the file base64 encoded.
+                File = new Base64FileUpload()
+                {
+                    Filename = "demo-nda.pdf",
+                    Data = GetFileB64Bytes(filePath),
+                },
+                Fields = new List<SignatureField>
+                {
+                    new()
+                    {
+                        Id = "recipientName",
+                        Type = "fullName",
+                        Rect = new Rect
+                        {
+                            X = 223,
+                            Y = 120,
+                            Height = 12,
+                            Width = 140
+                        },
+                        PageNum = 0,
+                    },
+                    new()
+                    {
+                        Id = "recipientEmail",
+                        Type = "email",
+                        Rect = new Rect
+                        {
+                            X = 367,
+                            Y = 120,
+                            Height = 12,
+                            Width = 166,
+                        },
+                        PageNum = 0,
+                    },
+                    new()
+                    {
+                        Id = "recipientSignatureName",
+                        Type = "fullName",
+                        Rect = new Rect {X = 107, Y = 374, Height = 22, Width = 157},
+                        PageNum = 1,
+                    },
+                    new()
+                    {
+                        Id = "recipientSignature",
+                        Type = "signature",
+                        Rect = new Rect {X = 270, Y = 374, Height = 22, Width = 142},
+                        PageNum = 1,
+                    },
+                    new()
+                    {
+                        Id = "recipientSignatureDate",
+                        Type = "signatureDate",
+                        Rect = new Rect {X = 419, Y = 374, Height = 22, Width = 80},
+                        PageNum = 1,
+                    },
+                }
+            }
         };
     }
 
