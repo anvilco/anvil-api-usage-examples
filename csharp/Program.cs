@@ -1,3 +1,5 @@
+using AnvilExamples.examples;
+
 namespace AnvilExamples;
 
 public class ProgramItem
@@ -38,7 +40,7 @@ public class Program
         new ProgramItem()
         {
             Name = "create-update-workflow",
-            Klass = typeof(CreateEtchESignPacket),
+            Klass = typeof(CreateUpdateWorkflowSubmission),
         }
     };
 
