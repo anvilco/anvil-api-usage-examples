@@ -1,6 +1,6 @@
-# Anvil usage examples in JavaScript
+# Anvil usage examples in C#
 
-Welcome to Anvil API usage examples in JavaScript! There are [example scripts](examples) for the following API actions:
+Welcome to Anvil API usage examples in C#! There are [example scripts](examples) for the following API actions:
 
 * [Filling a PDF template with your own data](examples/FillPdf.cs)
 * [Generating a PDF from HTML and CSS](examples/GenerateHtmlToPdf.cs)
@@ -18,7 +18,7 @@ key.
 Each script is set up to be runnable with minimal input. Once you have an API key, you can clone this repo and run the
 example scripts from this directory.
 
-Once you have this repo cloned, cd into this `javascript` directory and install the dependencies:
+Once you have this repo cloned, cd into this `csharp` directory and install the dependencies:
 
 ```sh
 cd csharp
