@@ -25,16 +25,13 @@
 
 using Anvil.Client;
 using Anvil.Payloads.Request.Types;
+using AnvilExamples.examples;
 using CreateEtchPacket = Anvil.Payloads.Request.CreateEtchPacket;
 
 namespace AnvilExamples;
 
 class CreateEtchESignPacket : RunnableBaseExample
 {
-    public CreateEtchESignPacket(string apiKey) : base(apiKey)
-    {
-    }
-
     private string GetFileB64Bytes(string filePath)
     {
         // Convert the file bytes in into a base64 encoded string.

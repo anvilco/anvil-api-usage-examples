@@ -16,7 +16,7 @@
 
 using Anvil.Client;
 
-namespace AnvilExamples;
+namespace AnvilExamples.examples;
 
 class FillPDF : RunnableBaseExample
 {
@@ -78,10 +78,6 @@ class FillPDF : RunnableBaseExample
                 {"image", "https://placekitten.com/800/495"}
             }
         };
-    }
-
-    public FillPDF(string apiKey) : base(apiKey)
-    {
     }
 
     public override async Task Run(string apiKey)

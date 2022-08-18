@@ -1,4 +1,4 @@
-namespace AnvilExamples;
+namespace AnvilExamples.examples;
 
 public interface IBaseExample
 {
@@ -7,13 +7,6 @@ public interface IBaseExample
 
 abstract class RunnableBaseExample : IBaseExample
 {
-    protected string _apiKey;
-
-    public RunnableBaseExample(string apiKey)
-    {
-        _apiKey = apiKey;
-    }
-
     public virtual Task Run(string apiKey)
     {
         throw new NotImplementedException();

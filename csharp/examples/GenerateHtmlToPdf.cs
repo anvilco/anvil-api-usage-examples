@@ -21,14 +21,10 @@ using Anvil.Client;
 using Anvil.Payloads.Request;
 using Anvil.Payloads.Request.Types;
 
-namespace AnvilExamples;
+namespace AnvilExamples.examples;
 
 class GenerateHtmlToPdf : RunnableBaseExample
 {
-    public GenerateHtmlToPdf(string apiKey) : base(apiKey)
-    {
-    }
-
     private GeneratePdf GetPayload()
     {
         return new GeneratePdf()

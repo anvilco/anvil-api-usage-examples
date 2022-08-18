@@ -16,7 +16,7 @@ using Anvil.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace AnvilExamples;
+namespace AnvilExamples.examples;
 
 class MakeGraphqlRequest : RunnableBaseExample
 {
@@ -81,9 +81,5 @@ class MakeGraphqlRequest : RunnableBaseExample
         var firstWeld = userResponse["currentUser"]["organizations"][0]["welds"][0];
         var weldResponse = await CallWeldQuery(client, (string) firstWeld["eid"]);
         Console.WriteLine("First weld details:\n" + weldResponse);
-    }
-
-    public MakeGraphqlRequest(string apiKey) : base(apiKey)
-    {
     }
 }
