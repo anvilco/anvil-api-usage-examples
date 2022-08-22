@@ -31,6 +31,7 @@ All supported languages have a directory at the root of this repo.
 * [JavaScript](/javascript)
 * [TypeScript](/typescript)
 * [Python](/python)
+* [C#/.NET](/csharp)
 
 ## License
 
