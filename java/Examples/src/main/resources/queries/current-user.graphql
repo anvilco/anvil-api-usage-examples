@@ -1,0 +1,19 @@
+query CurrentUser {
+    currentUser {
+        eid
+        name
+        organizations {
+            eid
+            slug
+            name
+            casts {
+                eid
+                name
+            }
+            welds {
+                eid
+                name
+            }
+        }
+    }
+}

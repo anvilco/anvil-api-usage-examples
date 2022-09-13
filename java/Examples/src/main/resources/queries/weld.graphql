@@ -1,0 +1,11 @@
+query WeldQuery ($eid: String) {
+    weld ( eid: $eid, ) {
+        eid
+        name
+        forges {
+            eid
+            slug
+            name
+        }
+    }
+}
