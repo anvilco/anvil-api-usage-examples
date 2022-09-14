@@ -1,46 +1,34 @@
 package com.useanvil.examples;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.useanvil.examples.runnable.FillPdf;
+import com.useanvil.examples.runnable.IRunnable;
+import com.useanvil.examples.runnable.MakeGraphqlRequest;
 
-import java.io.IOException;
-import java.net.http.HttpResponse;
-import java.nio.file.Paths;
+import java.util.AbstractMap;
+import java.util.Map;
 
 public class Main {
 
+    private static final Map<String, Class<? extends IRunnable>> runnableMap = Map.ofEntries(
+            new AbstractMap.SimpleEntry<>("make-graphql-request", MakeGraphqlRequest.class),
+            new AbstractMap.SimpleEntry<>("fill-pdf", FillPdf.class)
+    );
+
+
     public static void main(String[] args) throws Exception {
-        String apiKey = null;
-        if (args.length > 0) {
-            apiKey = args[0];
-        }
+        String apiKey = System.getenv("ANVIL_API_KEY");
 
         if (apiKey == null || apiKey.isBlank()) {
             throw new Exception("API key must be provided");
         }
 
-
-        ObjectMapper om = new ObjectMapper();
-
-        try {
-            GraphqlClient client = new GraphqlClient(apiKey);
-            HttpResponse<String> response = client.doRequest(Paths.get("src/main/resources/queries/current-user.graphql"), null);
-            String res = response.body();
-            JsonNode resNode = om.readTree(res);
-
-            // Response is in `{ "data": { "currentUser": { ... } } }` format
-            JsonNode currentUser = resNode.get("data").get("currentUser");
-
-            // Get the first org
-            JsonNode organization = currentUser.get("organizations").get(0);
-
-            // Get the first weld from the org
-            JsonNode weld = organization.get("welds").get(0);
-
-            System.out.println("currentUser: " + currentUser);
-            System.out.println("First weld details: " + weld);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        String toRun = null;
+        if (args.length > 0) {
+            toRun = args[0];
         }
+
+        IRunnable runnable = Main.runnableMap.get(toRun).getDeclaredConstructor().newInstance();
+
+        runnable.run(apiKey);
     }
 }

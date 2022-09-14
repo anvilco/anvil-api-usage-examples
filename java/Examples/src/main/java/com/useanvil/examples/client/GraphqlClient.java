@@ -1,24 +1,19 @@
-package com.useanvil.examples;
+package com.useanvil.examples.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.useanvil.examples.Constants;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class GraphqlClient {
-
-    private HttpClient client;
-    private String _apiKey;
-    private ObjectMapper _objectMapper;
+public class GraphqlClient extends BaseClient {
 
     public GraphqlClient(String apiKey) throws IOException, InterruptedException {
         this._apiKey = apiKey;
@@ -29,37 +24,10 @@ public class GraphqlClient {
                 .followRedirects(HttpClient.Redirect.NORMAL)
                 .connectTimeout(Duration.ofSeconds(20))
                 .build();
-
-//        HttpRequest request = this.createRequest();
-
-        // Async version
-        //        this.client
-        //                .sendAsync(request, HttpResponse.BodyHandlers.ofString())
-        //                .thenApply(HttpResponse::body)
-        //                .thenAccept(System.out::println);
-
-        // Maybe don't need to fully deserialize now, since we probably need to define classes for
-        // deserializing.
-//        HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
-
-//        System.out.println(response.statusCode());
-//        System.out.println(response.body());
-    }
-
-    public String getApiKey() throws RuntimeException {
-        if (this._apiKey.isBlank() || this._apiKey == null) {
-            throw new RuntimeException("API key cannot be blank or null");
-        }
-
-        return new String(Base64.getEncoder().encode((this._apiKey + ":").getBytes()));
     }
 
     public HttpRequest.Builder createRequestBuilder() throws RuntimeException {
-        return HttpRequest.newBuilder()
-                .uri(URI.create(Constants.GRAPHQL_ENDPOINT))
-                .timeout(Duration.ofSeconds(30))
-                .header("Authorization", "Basic " + this.getApiKey())
-                .header("Content-Type", "application/json");
+        return this.createRequestBuilder(Constants.GRAPHQL_ENDPOINT);
     }
 
     public HttpResponse<String> doRequest(Path queryFile, String variables) throws IOException, InterruptedException {
