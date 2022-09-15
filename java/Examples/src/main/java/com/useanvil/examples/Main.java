@@ -12,7 +12,7 @@ public class Main {
             new AbstractMap.SimpleEntry<>("fill-pdf", FillPdf.class),
             new AbstractMap.SimpleEntry<>("generate-html-to-pdf", GenerateHtmlToPdf.class),
             new AbstractMap.SimpleEntry<>("generate-markdown-to-pdf", GenerateMarkdownToPdf.class),
-            new AbstractMap.SimpleEntry<>("create-and-update-workflow-submission", WorkflowSubmission.class)
+            new AbstractMap.SimpleEntry<>("create-update-workflow", CreateUpdateWorkflowSubmission.class)
     );
 
 

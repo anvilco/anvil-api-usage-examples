@@ -16,7 +16,34 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WorkflowSubmission implements IRunnable {
+// Example: Create + update a Workflow submission via the Anvil API
+//
+// * Workflow API docs: https://www.useanvil.com/docs/api/workflows
+//
+// This script is runnable as is, all you need to do is supply your own API key
+// in the ANVIL_API_KEY environment variable in the .env file at the root of the
+// typescript directory.
+//
+// By default, the script uses the sample workflow in your organization when you
+// signed up for an Anvil account.
+//
+// ANVIL_API_KEY=<yourAPIKey> java -jar target/Examples-1.0-SNAPSHOT.jar create-update-workflow <my-org-slug>
+//
+// The script will:
+//
+// * Fetch Workflow details from human-readable slugs
+// * Find the Workflow's first webform
+// * Start the Workflow by submitting data to the webform
+// * Update the new submission with extra data
+//
+// By default, the script uses the sample workflow added to your organization
+// when you signed up for an Anvil account. If you do not have this workflow,
+// change `weldSlug` variable below to a workflow you do have.
+//
+// Objects within Workflows have their own terminology. See the following for
+// more info: https://www.useanvil.com/docs/api/getting-started#terminology
+
+public class CreateUpdateWorkflowSubmission implements IRunnable {
     private GraphqlClient client;
     private final ObjectMapper _om = new ObjectMapper();
 
@@ -29,6 +56,9 @@ public class WorkflowSubmission implements IRunnable {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         var creationPayload = String.format("Workflow start! %s", dateFormat.format(new Date()));
 
+        // We are relying on the sample workflow's Field Aliases here. See this help
+        // article for more info:
+        // https://www.useanvil.com/help/workflows/add-field-aliases-to-a-workflow
         Map<String, String> payload = new HashMap<>(Map.of(
                 "creationPayload", creationPayload
         ));
@@ -37,6 +67,7 @@ public class WorkflowSubmission implements IRunnable {
     }
 
     private String getUpdatePayload() throws JsonProcessingException {
+        // After the workflow has been started, we will update the new submission with this data
         Map<String, Serializable> name = new HashMap<>(Map.of(
                 "firstName", "Sally",
                 "lastName", "Jones"
@@ -49,6 +80,8 @@ public class WorkflowSubmission implements IRunnable {
     }
 
     private JsonNode getWeld(String weldSlug, String organizationSlug) throws IOException, InterruptedException {
+        // Ref docs:
+        // https://www.useanvil.com/docs/api/graphql/reference/#operation-weld-Queries
         Map<String, Serializable> variables = new HashMap<>(Map.of(
                 "organizationSlug", organizationSlug,
                 "slug", weldSlug
@@ -63,6 +96,8 @@ public class WorkflowSubmission implements IRunnable {
     }
 
     private JsonNode submitToWorkflowWebform(Map<String, Serializable> variables) throws IOException, InterruptedException {
+        // This function will submit data to a Workflow's Webform. In our system these
+        // objects are called Weld (Workflow), and Forge (webform).
         HttpResponse<String> response = this.client.doRequest(Paths.get("src/main/resources/mutations/forge-submit.graphql"), variables);
 
         JsonNode resNode = this._om.readTree(response.body());
@@ -82,14 +117,23 @@ public class WorkflowSubmission implements IRunnable {
         JsonNode weld;
         String weldSlug = "sample-workflow";
 
+        //
+        // Find the workflow
+        //
+
         try {
             this.client = new GraphqlClient(apiKey);
+            // Workflows are 'Weld' objects in Anvil's system
             weld = this.getWeld(weldSlug, organizationSlug);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
         System.out.println("Found weld: " + weld.get("eid").asText());
+
+        //
+        // Start the workflow
+        //
 
         // Now we get the workflow's first webform to start the workflow
         // Webforms are `Forge` objects in Anvil's system
@@ -106,6 +150,8 @@ public class WorkflowSubmission implements IRunnable {
         System.out.println(submission);
 
         String weldDataEid = submission.get("weldData").get("eid").asText();
+
+        // We have the newly created objects
         String detailsUrl = this.buildWorkflowSubmissionDetailsUrl(organizationSlug, weldSlug, weldDataEid);
 
         System.out.println("Workflow started");
@@ -114,9 +160,14 @@ public class WorkflowSubmission implements IRunnable {
         System.out.println("WeldData eid: " + weldDataEid);
         System.out.println(submission);
 
+        //
         // Update the webform's submission data
-        System.out.println(">>> Updating the submission...");
+        //
 
+        // Updating the submission uses the same mutation, but you just specify a
+        // submission and weldData information. You can add more data or change
+        // payload data
+        System.out.println(">>> Updating the submission...");
 
         JsonNode updatedSubmission = this.submitToWorkflowWebform(new HashMap<>(Map.of(
                 "forgeEid", startForgeEid,
