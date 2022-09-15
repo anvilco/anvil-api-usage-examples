@@ -29,7 +29,7 @@ public class Main {
         String otherArg = null;
         if (args.length > 0) {
             toRun = args[0];
-            if (args[1] != null) {
+            if (args.length > 1 && args[1] != null) {
                 otherArg = args[1];
             }
         }
