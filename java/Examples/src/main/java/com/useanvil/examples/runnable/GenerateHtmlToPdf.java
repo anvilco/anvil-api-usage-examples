@@ -33,4 +33,9 @@ public class GenerateHtmlToPdf implements IRunnable {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void run(String apiKey, String otherArg) throws Exception {
+
+    }
 }

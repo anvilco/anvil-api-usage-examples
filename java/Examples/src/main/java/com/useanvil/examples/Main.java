@@ -17,6 +17,8 @@ public class Main {
 
 
     public static void main(String[] args) throws Exception {
+        // Get your API key from your Anvil organization settings.
+        // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
         String apiKey = System.getenv("ANVIL_API_KEY");
 
         if (apiKey == null || apiKey.isBlank()) {
@@ -24,8 +26,12 @@ public class Main {
         }
 
         String toRun = null;
+        String otherArg = null;
         if (args.length > 0) {
             toRun = args[0];
+            if (args[1] != null) {
+                otherArg = args[1];
+            }
         }
 
         IRunnable runnable = Main.runnableMap
@@ -33,6 +39,10 @@ public class Main {
                 .getDeclaredConstructor()
                 .newInstance();
 
-        runnable.run(apiKey);
+        if (otherArg != null && !otherArg.isBlank()) {
+            runnable.run(apiKey, otherArg);
+        } else {
+            runnable.run(apiKey);
+        }
     }
 }

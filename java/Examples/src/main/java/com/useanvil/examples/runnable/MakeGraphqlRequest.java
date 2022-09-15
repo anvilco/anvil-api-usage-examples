@@ -15,7 +15,7 @@ public class MakeGraphqlRequest implements IRunnable {
 
         try {
             GraphqlClient client = new GraphqlClient(apiKey);
-            HttpResponse<String> response = client.doRequest(Paths.get("src/main/resources/queries/current-user.graphql"), null);
+            HttpResponse<String> response = client.doRequest(Paths.get("src/main/resources/queries/current-user.graphql"));
             String res = response.body();
             JsonNode resNode = om.readTree(res);
 
@@ -33,5 +33,10 @@ public class MakeGraphqlRequest implements IRunnable {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void run(String apiKey, String otherArg) throws Exception {
+
     }
 }

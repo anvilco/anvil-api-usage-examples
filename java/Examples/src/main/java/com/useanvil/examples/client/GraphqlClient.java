@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.useanvil.examples.Constants;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -28,6 +29,15 @@ public class GraphqlClient extends BaseClient {
 
     public HttpRequest.Builder createRequestBuilder() throws RuntimeException {
         return this.createRequestBuilder(Constants.GRAPHQL_ENDPOINT);
+    }
+
+    public HttpResponse<String> doRequest(Path queryFile) throws IOException, InterruptedException {
+        return this.doRequest(new String(Files.readAllBytes(queryFile)), null);
+    }
+
+    public HttpResponse<String> doRequest(Path queryFile, Map<String, Serializable> variables) throws IOException, InterruptedException {
+        String json = this._objectMapper.writeValueAsString(variables);
+        return this.doRequest(new String(Files.readAllBytes(queryFile)), json);
     }
 
     public HttpResponse<String> doRequest(Path queryFile, String variables) throws IOException, InterruptedException {
