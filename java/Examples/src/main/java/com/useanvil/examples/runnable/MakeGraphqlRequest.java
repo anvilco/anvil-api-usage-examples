@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 // This is runnable as is, all you need to do is supply your own API key
 // in the ANVIL_API_KEY environment variable.
 //
-// ANVIL_API_KEY=<yourAPIKey> java -jar target/Examples-1.0-SNAPSHOT-jar-with-dependencies.jar make-graphql-request
+// ANVIL_API_KEY=<yourAPIKey> java -jar target/Examples-1.0-SNAPSHOT.jar make-graphql-request
 
 public class MakeGraphqlRequest implements IRunnable {
     @Override

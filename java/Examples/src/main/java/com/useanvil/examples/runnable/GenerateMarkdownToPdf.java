@@ -14,13 +14,13 @@ import java.nio.file.Paths;
 // This script is runnable as is, all you need to do is supply your own API key
 // in the ANVIL_API_KEY environment variable.
 //
-// ANVIL_API_KEY=<yourAPIKey> java -jar target/Examples-1.0-SNAPSHOT-jar-with-dependencies.jar generate-markdown-to-pdf
+// ANVIL_API_KEY=<yourAPIKey> java -jar target/Examples-1.0-SNAPSHOT.jar generate-markdown-to-pdf
 //
 // The filled PDF will be saved to `output/generate-markdown-output.pdf`. You can
 // open the filled PDF immediately after saving the file on OSX machines with
 // the `open` command:
 //
-// ANVIL_API_KEY=<yourAPIKey> java -jar target/Examples-1.0-SNAPSHOT-jar-with-dependencies.jar generate-markdown-to-pdf \
+// ANVIL_API_KEY=<yourAPIKey> java -jar target/Examples-1.0-SNAPSHOT.jar generate-markdown-to-pdf \
 //   && open output/generate-markdown-output.pdf
 
 public class GenerateMarkdownToPdf implements IRunnable {
