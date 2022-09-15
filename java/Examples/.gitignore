@@ -24,3 +24,5 @@ hs_err_pid*
 replay_pid*
 
 target/
+output/
+!output/README.md
