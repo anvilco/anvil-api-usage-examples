@@ -4,16 +4,16 @@ import com.useanvil.examples.client.RestClient;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-public class FillPdf implements IRunnable {
+public class GenerateHtmlToPdf implements IRunnable {
     @Override
     public void run(String apiKey) {
-        String pdfTemplateEid = "B5Loz3C7GVortDmn4p2P";
         String payload;
 
         try {
-            payload = new String(Files.readAllBytes(Paths.get("src/main/resources/payloads/pdf-fill.json")));
+            payload = new String(Files.readAllBytes(Paths.get("src/main/resources/payloads/generate-html-to-pdf.json")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -21,14 +21,14 @@ public class FillPdf implements IRunnable {
         RestClient client = new RestClient(apiKey);
         HttpResponse<byte[]> response;
         try {
-            // Fill PDF returns the filled PDF file, so save the bytes directly to a file.
-            response = client.fillPdf(pdfTemplateEid, payload);
+            // Generate PDF returns the filled PDF file, so save the bytes directly to a file.
+            response = client.generatePdf(payload);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
         try {
-            Files.write(Paths.get("output/pdf-fill.pdf"), response.body());
+            Files.write(Paths.get("output/generate-html-output.pdf"), response.body());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

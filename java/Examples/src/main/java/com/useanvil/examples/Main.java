@@ -1,8 +1,6 @@
 package com.useanvil.examples;
 
-import com.useanvil.examples.runnable.FillPdf;
-import com.useanvil.examples.runnable.IRunnable;
-import com.useanvil.examples.runnable.MakeGraphqlRequest;
+import com.useanvil.examples.runnable.*;
 
 import java.util.AbstractMap;
 import java.util.Map;
@@ -11,7 +9,10 @@ public class Main {
 
     private static final Map<String, Class<? extends IRunnable>> runnableMap = Map.ofEntries(
             new AbstractMap.SimpleEntry<>("make-graphql-request", MakeGraphqlRequest.class),
-            new AbstractMap.SimpleEntry<>("fill-pdf", FillPdf.class)
+            new AbstractMap.SimpleEntry<>("fill-pdf", FillPdf.class),
+            new AbstractMap.SimpleEntry<>("generate-html-to-pdf", GenerateHtmlToPdf.class),
+            new AbstractMap.SimpleEntry<>("generate-markdown-to-pdf", GenerateMarkdownToPdf.class),
+            new AbstractMap.SimpleEntry<>("create-and-update-workflow-submission", WorkflowSubmission.class)
     );
 
 
@@ -27,7 +28,10 @@ public class Main {
             toRun = args[0];
         }
 
-        IRunnable runnable = Main.runnableMap.get(toRun).getDeclaredConstructor().newInstance();
+        IRunnable runnable = Main.runnableMap
+                .get(toRun)
+                .getDeclaredConstructor()
+                .newInstance();
 
         runnable.run(apiKey);
     }

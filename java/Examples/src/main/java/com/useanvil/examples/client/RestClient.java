@@ -36,4 +36,12 @@ public class RestClient extends BaseClient {
 
         return this.client.send(request, HttpResponse.BodyHandlers.ofByteArray());
     }
+
+    public HttpResponse<byte[]> generatePdf(String payload) throws IOException, InterruptedException {
+        HttpRequest request = this.createRequestBuilder(Constants.REST_ENDPOINT + Constants.GeneratePdf)
+                .POST(HttpRequest.BodyPublishers.ofString(payload))
+                .build();
+
+        return this.client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+    }
 }
