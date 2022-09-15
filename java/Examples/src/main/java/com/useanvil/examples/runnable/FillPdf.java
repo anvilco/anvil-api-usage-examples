@@ -21,7 +21,8 @@ public class FillPdf implements IRunnable {
         RestClient client = new RestClient(apiKey);
         HttpResponse<byte[]> response;
         try {
-            // Fill PDF returns the filled PDF file, so save the bytes directly to a file.
+            // response data will be the filled PDF binary data. It is important that the
+            // data is saved with no encoding! Otherwise, the PDF file will be corrupt.
             response = client.fillPdf(pdfTemplateEid, payload);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
