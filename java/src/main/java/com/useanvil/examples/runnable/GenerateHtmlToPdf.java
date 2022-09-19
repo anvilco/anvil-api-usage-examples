@@ -48,7 +48,9 @@ public class GenerateHtmlToPdf implements IRunnable {
 
         try {
             Files.write(Paths.get("output/generate-html-output.pdf"), response.body());
+            System.out.println("Fill PDF finished");
         } catch (IOException e) {
+            System.out.println("Fill PDF did not finish successfully");
             throw new RuntimeException(e);
         }
     }
