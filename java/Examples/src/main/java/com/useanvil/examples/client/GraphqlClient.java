@@ -1,17 +1,18 @@
 package com.useanvil.examples.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.mizosoft.methanol.*;
 import com.useanvil.examples.Constants;
+import com.useanvil.examples.entity.CreateEtchPacket;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 public class GraphqlClient extends BaseClient {
@@ -20,10 +21,13 @@ public class GraphqlClient extends BaseClient {
         this._apiKey = apiKey;
         this._objectMapper = new ObjectMapper();
 
-        client = HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_1_1)
-                .followRedirects(HttpClient.Redirect.NORMAL)
-                .connectTimeout(Duration.ofSeconds(20))
+        client = Methanol.newBuilder()
+                .baseUri(Constants.BASE_URL)
+                .defaultHeader("Accept", "application/json")
+                .requestTimeout(Duration.ofSeconds(20))
+                .headersTimeout(Duration.ofSeconds(5))
+                .readTimeout(Duration.ofSeconds(5))
+                .autoAcceptEncoding(true)
                 .build();
     }
 
@@ -44,12 +48,43 @@ public class GraphqlClient extends BaseClient {
         return this.doRequest(new String(Files.readAllBytes(queryFile)), variables);
     }
 
+    public HttpResponse<String> doRequest(Path queryFile, CreateEtchPacket variables, Path[] files) throws IOException, InterruptedException {
+        // GraphQL requests are in the format `{ "query": "", "variables": "" }`
+        Map<String, Serializable> graphqlMap = new HashMap<>();
+        graphqlMap.put("query", new String(Files.readAllBytes(queryFile)));
+        graphqlMap.put("variables", variables);
+        String json = this._objectMapper.writeValueAsString(graphqlMap);
+
+        // Most of this is to handle multipart uploads.
+        // For normal files, a base64-encoded file in the payload should work
+        // fine, if the payload size is too large, you will have to use
+        // multipart as described in the spec here:
+        // https://github.com/jaydenseric/graphql-multipart-request-spec
+        //
+        // This will be handled automatically in a future Anvil Java library.
+        Map<String, String[]> map = new HashMap<>();
+        map.put("1", new String[]{"variables.files.1.file"});
+
+        // We're using Methanol's Multipart request builder here since it's
+        // easier to deal with for our purposes here.
+        // It's compatible with the built-in Java 11 HTTP client, so we can
+        // just pass that into `client.send()`.
+        MultipartBodyPublisher multipartBody = MultipartBodyPublisher.newBuilder()
+                .formPart("operations", HttpRequest.BodyPublishers.ofString(json))
+                .formPart("map", HttpRequest.BodyPublishers.ofString(this._objectMapper.writeValueAsString(map)))
+                .filePart("1", files[0])
+                .build();
+
+        HttpRequest request = this.createRequestBuilder()
+                .POST(multipartBody)
+                .build();
+
+        return this.client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
 
     public HttpResponse<String> doRequest(String query, String variables) throws IOException, InterruptedException {
-//        String query = new String(Files.readAllBytes(Paths.get("src/main/resources/queries/current-user.graphql")));
-
         // GraphQL requests are in the format `{ "query": "", "variables": "" }`
-        Map<String, String> graphqlMap = new LinkedHashMap<>();
+        Map<String, String> graphqlMap = new HashMap<>();
         graphqlMap.put("query", query);
         graphqlMap.put("variables", variables);
         String json = this._objectMapper.writeValueAsString(graphqlMap);
@@ -59,10 +94,5 @@ public class GraphqlClient extends BaseClient {
                 .build();
 
         return this.client.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-
-    public String fillPdf(String s) {
-        return "";
     }
 }

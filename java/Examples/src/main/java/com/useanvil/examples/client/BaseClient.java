@@ -1,7 +1,6 @@
 package com.useanvil.examples.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.useanvil.examples.Constants;
 
 import java.net.URI;
 import java.net.http.HttpClient;

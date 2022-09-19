@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class CreateUpdateWorkflowSubmission implements IRunnable {
     private GraphqlClient client;
-    private final ObjectMapper _om = new ObjectMapper();
+    private final ObjectMapper _objectMapper = new ObjectMapper();
 
     public String buildWorkflowSubmissionDetailsUrl(String organizationSlug, String weldSlug, String weldDataEid) {
         String urlFormat = "%s/org/%s/w/%s/%s";
@@ -63,7 +63,7 @@ public class CreateUpdateWorkflowSubmission implements IRunnable {
                 "creationPayload", creationPayload
         ));
 
-        return this._om.writeValueAsString(payload);
+        return this._objectMapper.writeValueAsString(payload);
     }
 
     private String getUpdatePayload() throws JsonProcessingException {
@@ -76,7 +76,7 @@ public class CreateUpdateWorkflowSubmission implements IRunnable {
                 "name", name,
                 "email", "sally@example.com"
         ));
-        return this._om.writeValueAsString(payload);
+        return this._objectMapper.writeValueAsString(payload);
     }
 
     private JsonNode getWeld(String weldSlug, String organizationSlug) throws IOException, InterruptedException {
@@ -89,7 +89,7 @@ public class CreateUpdateWorkflowSubmission implements IRunnable {
 
         HttpResponse<String> response = this.client.doRequest(Paths.get("src/main/resources/queries/wf-weld.graphql"), variables);
 
-        JsonNode resNode = this._om.readTree(response.body());
+        JsonNode resNode = this._objectMapper.readTree(response.body());
 
         // Response is in `{ "data": { "weld": { ... } } }` format
         return resNode.get("data").get("weld");
@@ -100,7 +100,7 @@ public class CreateUpdateWorkflowSubmission implements IRunnable {
         // objects are called Weld (Workflow), and Forge (webform).
         HttpResponse<String> response = this.client.doRequest(Paths.get("src/main/resources/mutations/forge-submit.graphql"), variables);
 
-        JsonNode resNode = this._om.readTree(response.body());
+        JsonNode resNode = this._objectMapper.readTree(response.body());
 
         // Response is in `{ "data": { "forgeSubmit": { ... } } }` format
         return resNode.get("data").get("forgeSubmit");

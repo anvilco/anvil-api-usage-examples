@@ -1,14 +1,14 @@
 package com.useanvil.examples.runnable;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.useanvil.examples.client.GraphqlClient;
-import com.useanvil.examples.entity.request.*;
+import com.useanvil.examples.entity.*;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -37,12 +37,12 @@ import java.util.*;
 // well.
 
 public class CreateEtchESignPacket implements IRunnable {
-    ObjectMapper _om = new ObjectMapper();
+    ObjectMapper _objectMapper = new ObjectMapper();
 
     private byte[] getBase64File(String filePath) {
         byte[] encodedFile;
         try {
-            encodedFile = Base64.getEncoder().encode(new String(Files.readAllBytes(Paths.get(filePath))).getBytes());
+            encodedFile = Base64.getUrlEncoder().encode(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -85,12 +85,12 @@ public class CreateEtchESignPacket implements IRunnable {
 
     private PayloadData getPayloadData(String signerName, String signerEmail) {
         var data = new PayloadData();
-        // 'sampleTemplate' is the sample template ID specified above
-        var sampleTemplate = new HashMap<String, Serializable>();
         var sampleTemplateData = new HashMap<String, Serializable>();
         sampleTemplateData.put("name", signerName);
         sampleTemplateData.put("email", signerEmail);
 
+        // 'sampleTemplate' is the sample template ID specified above
+        var sampleTemplate = new HashMap<String, Serializable>();
         sampleTemplate.put("data", sampleTemplateData);
 
         data.payloads.put("sampleTemplate", sampleTemplate);
@@ -98,11 +98,9 @@ public class CreateEtchESignPacket implements IRunnable {
         return data;
     }
 
-    private String getPacketVariables(String pdfTemplateEid, String signerName, String signerEmail) {
+    private CreateEtchPacket getPacketVariables(String pdfTemplateEid, String signerName, String signerEmail) {
         String res;
         CreateEtchPacket packetPayload = new CreateEtchPacket();
-        // The second file is an NDA we'll upload and specify the field locations
-        String ndaFilePath = "../../static/test-pdf-nda.pdf";
 
         // Subject & body of the emails to signers
         packetPayload.name = "Test Docs - " + signerName;
@@ -114,7 +112,7 @@ public class CreateEtchESignPacket implements IRunnable {
         // packetPayload.mergePDFs = false;
 
         // Gather all file data. We'll use this in the final payload below.
-        List<IAttachable> etchFiles = this.getFiles(pdfTemplateEid, ndaFilePath);
+        List<IAttachable> etchFiles = this.getFiles(pdfTemplateEid);
         List<EtchSigner> signers = this.getSigners(signerName, signerEmail);
 
         // This data will fill the PDF before it's sent to any signers.
@@ -125,16 +123,10 @@ public class CreateEtchESignPacket implements IRunnable {
         packetPayload.signers = signers.toArray(new EtchSigner[0]);
         packetPayload.data = data;
 
-        try {
-            res = this._om.writeValueAsString(packetPayload);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        return res;
+        return packetPayload;
     }
 
-    private List<IAttachable> getFiles(String pdfTemplateEid, String ndaFilePath) {
+    private List<IAttachable> getFiles(String pdfTemplateEid) {
         ArrayList<IAttachable> ret = new ArrayList<>();
         EtchCastRef ref = new EtchCastRef("sampleTemplate", pdfTemplateEid);
 
@@ -147,7 +139,9 @@ public class CreateEtchESignPacket implements IRunnable {
         fields.add(new CastField("recipientSignature", "signature", new Rect(270, 374, 22, 142), 1));
         fields.add(new CastField("recipientSignatureDate", "signatureDate", new Rect(419, 374, 22, 80), 1));
 
-        FileUpload file = new FileUpload("fileUploadNDA", "Demo NDA", this.getBase64File(ndaFilePath), fields.toArray(new CastField[0]));
+        // The file here is `null`, but will be replaced later at the server-level.
+        // This example uses the multipart process.
+        FileUpload file = new FileUpload("fileUploadNDA", "Demo NDA", null, fields.toArray(new CastField[0]));
 
         ret.add(ref);
         ret.add(file);
@@ -165,21 +159,28 @@ public class CreateEtchESignPacket implements IRunnable {
         // on setting up your own template
         String pdfTemplateId = "B5Loz3C7GVortDmn4p2P";
 
-        // Signer information
-        var signerName = "Testy Signer";
-        // Signer email comes from a CLI argument
-        var signerEmail = otherArg;
+        // The second file is an NDA we'll upload and specify the field locations
+        String ndaFilePath = "../../static/test-pdf-nda.pdf";
 
-        var payload = this.getPacketVariables(pdfTemplateId, signerName, signerEmail);
+        // Signer information
+        String signerName = "Testy Signer";
+        // Signer email comes from a CLI argument
+        String signerEmail = otherArg;
+
+        CreateEtchPacket payload = this.getPacketVariables(pdfTemplateId, signerName, signerEmail);
+
+        Path[] uploadFiles = new Path[]{ Paths.get(ndaFilePath) };
 
         GraphqlClient client;
         try {
             client = new GraphqlClient(apiKey);
             System.out.println("Creating Etch e-sign packet...");
-            HttpResponse<String> response = client.doRequest(Paths.get("src/main/resources/mutations/create-etch-packet.graphql"), payload);
+            HttpResponse<String> response = client.doRequest(Paths.get("src/main/resources/mutations/create-etch-packet.graphql"), payload, uploadFiles);
+            String headers = String.valueOf(response.request().headers());
             String res = response.body();
             int statusCode = response.statusCode();
             System.out.println(statusCode);
+            System.out.println(headers);
             System.out.println(res);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -188,6 +189,5 @@ public class CreateEtchESignPacket implements IRunnable {
 
     @Override
     public void run(String apiKey) throws Exception {
-
     }
 }

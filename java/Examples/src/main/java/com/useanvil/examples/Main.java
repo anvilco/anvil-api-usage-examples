@@ -35,6 +35,8 @@ public class Main {
             }
         }
 
+        System.out.println("Running: " + toRun);
+
         IRunnable runnable = Main.runnableMap
                 .get(toRun)
                 .getDeclaredConstructor()
