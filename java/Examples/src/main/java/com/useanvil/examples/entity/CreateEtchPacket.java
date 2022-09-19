@@ -1,6 +1,8 @@
-package com.useanvil.examples.entity.request;
+package com.useanvil.examples.entity;
 
-public class CreateEtchPacket {
+import java.io.Serializable;
+
+public class CreateEtchPacket implements Serializable  {
     // Indicate the packet is all ready to send to the
     // signers. An email will be sent to the first signer.
     public boolean isDraft;

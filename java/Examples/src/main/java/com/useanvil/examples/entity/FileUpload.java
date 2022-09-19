@@ -1,4 +1,4 @@
-package com.useanvil.examples.entity.request;
+package com.useanvil.examples.entity;
 
 
 import java.io.Serializable;
