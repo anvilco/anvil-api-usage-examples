@@ -11,8 +11,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.Format;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class GraphqlClient extends BaseClient {
@@ -49,7 +51,7 @@ public class GraphqlClient extends BaseClient {
     }
 
     public HttpResponse<String> doRequest(Path queryFile, CreateEtchPacket variables, Path[] files) throws IOException, InterruptedException {
-        // GraphQL requests are in the format `{ "query": "", "variables": "" }`
+        // GraphQL requests are in the format `{ "query": "", "variables": { ... } }`
         Map<String, Serializable> graphqlMap = new HashMap<>();
         graphqlMap.put("query", new String(Files.readAllBytes(queryFile)));
         graphqlMap.put("variables", variables);
@@ -62,21 +64,29 @@ public class GraphqlClient extends BaseClient {
         // https://github.com/jaydenseric/graphql-multipart-request-spec
         //
         // This will be handled automatically in a future Anvil Java library.
-        Map<String, String[]> map = new HashMap<>();
-        map.put("1", new String[]{"variables.files.1.file"});
+        LinkedHashMap<String, String[]> fileMap = new LinkedHashMap<>();
+        for (int fileIdx = 0; fileIdx < files.length; fileIdx++) {
+            String mapStr = String.format("variables.files.%s.file", fileIdx);
+            // The value part of the map needs to be an array.
+            fileMap.put(String.valueOf(fileIdx), new String[]{mapStr});
+        }
 
         // We're using Methanol's Multipart request builder here since it's
         // easier to deal with for our purposes here.
         // It's compatible with the built-in Java 11 HTTP client, so we can
         // just pass that into `client.send()`.
-        MultipartBodyPublisher multipartBody = MultipartBodyPublisher.newBuilder()
+        MultipartBodyPublisher.Builder multipartBody = MultipartBodyPublisher.newBuilder()
                 .formPart("operations", HttpRequest.BodyPublishers.ofString(json))
-                .formPart("map", HttpRequest.BodyPublishers.ofString(this._objectMapper.writeValueAsString(map)))
-                .filePart("1", files[0])
-                .build();
+                .formPart("map", HttpRequest.BodyPublishers.ofString(this._objectMapper.writeValueAsString(fileMap)));
+
+        // Go through the files and add them to our multipart builder
+        for (String fileKey : fileMap.keySet()) {
+            var file = files[Integer.parseInt(fileKey)];
+            multipartBody.filePart(fileKey, files[Integer.parseInt(fileKey)]);
+        }
 
         HttpRequest request = this.createRequestBuilder()
-                .POST(multipartBody)
+                .POST(multipartBody.build())
                 .build();
 
         return this.client.send(request, HttpResponse.BodyHandlers.ofString());

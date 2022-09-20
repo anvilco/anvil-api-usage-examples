@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.useanvil.examples.client.GraphqlClient;
 import com.useanvil.examples.entity.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.http.HttpResponse;
@@ -132,6 +133,10 @@ public class CreateEtchESignPacket implements IRunnable {
 
         ArrayList<CastField> fields = new ArrayList<>();
 
+        // The second file is an NDA we'll upload and specify the field locations
+        String ndaFilePath = "../static/test-pdf-nda.pdf";
+        Path filePath = Paths.get(ndaFilePath);
+
         // This is a file we will upload and specify the fields ourselves
         fields.add(new CastField("recipientName", "fullName", new Rect(223, 120, 12, 140), 0));
         fields.add(new CastField("recipientEmail", "email", new Rect(367, 120, 12, 166), 1));
@@ -139,9 +144,7 @@ public class CreateEtchESignPacket implements IRunnable {
         fields.add(new CastField("recipientSignature", "signature", new Rect(270, 374, 22, 142), 1));
         fields.add(new CastField("recipientSignatureDate", "signatureDate", new Rect(419, 374, 22, 80), 1));
 
-        // The file here is `null`, but will be replaced later at the server-level.
-        // This example uses the multipart process.
-        FileUpload file = new FileUpload("fileUploadNDA", "Demo NDA", null, fields.toArray(new CastField[0]));
+        FileUpload file = new FileUpload("fileUploadNDA", "Demo NDA", filePath, fields.toArray(new CastField[0]));
 
         ret.add(ref);
         ret.add(file);
@@ -159,9 +162,6 @@ public class CreateEtchESignPacket implements IRunnable {
         // on setting up your own template
         String pdfTemplateId = "B5Loz3C7GVortDmn4p2P";
 
-        // The second file is an NDA we'll upload and specify the field locations
-        String ndaFilePath = "../../static/test-pdf-nda.pdf";
-
         // Signer information
         String signerName = "Testy Signer";
         // Signer email comes from a CLI argument
@@ -169,13 +169,29 @@ public class CreateEtchESignPacket implements IRunnable {
 
         CreateEtchPacket payload = this.getPacketVariables(pdfTemplateId, signerName, signerEmail);
 
-        Path[] uploadFiles = new Path[]{ Paths.get(ndaFilePath) };
+        ArrayList<Path> filesToUpload = new ArrayList<>();
+        for (IAttachable file : payload.files) {
+            // Go through the files and find ones that have a path.
+            // Note that _order matters_ even though it gets mapped to a key.
+            if (file instanceof FileUpload) {
+                FileUpload _file = (FileUpload) file;
+
+                Path _filePath = _file.getFilePath();
+                if (_filePath != null) {
+                    filesToUpload.add(_filePath);
+                }
+            }
+        }
 
         GraphqlClient client;
         try {
             client = new GraphqlClient(apiKey);
             System.out.println("Creating Etch e-sign packet...");
-            HttpResponse<String> response = client.doRequest(Paths.get("src/main/resources/mutations/create-etch-packet.graphql"), payload, uploadFiles);
+            HttpResponse<String> response = client.doRequest(
+                    Paths.get("src/main/resources/mutations/create-etch-packet.graphql"),
+                    payload,
+                    filesToUpload.toArray(filesToUpload.toArray(new Path[0]))
+            );
             String headers = String.valueOf(response.request().headers());
             String res = response.body();
             int statusCode = response.statusCode();
