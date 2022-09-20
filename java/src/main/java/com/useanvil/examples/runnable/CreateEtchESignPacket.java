@@ -169,16 +169,20 @@ public class CreateEtchESignPacket implements IRunnable {
 
         CreateEtchPacket payload = this.getPacketVariables(pdfTemplateId, signerName, signerEmail);
 
-        ArrayList<Path> filesToUpload = new ArrayList<>();
-        for (IAttachable file : payload.files) {
+        Map<Integer, Path> filesToUpload = new LinkedHashMap<>();
+        for (int idx = 0; idx < payload.files.length; idx++) {
             // Go through the files and find ones that have a path.
             // Note that _order matters_ even though it gets mapped to a key.
+            var file = payload.files[idx];
             if (file instanceof FileUpload) {
                 FileUpload _file = (FileUpload) file;
 
                 Path _filePath = _file.getFilePath();
                 if (_filePath != null) {
-                    filesToUpload.add(_filePath);
+                    // We need to know which file (via index) this path belongs
+                    // to, and we will map this later during the multipart request
+                    // creation stage.
+                    filesToUpload.put(idx, _filePath);
                 }
             }
         }
@@ -190,7 +194,7 @@ public class CreateEtchESignPacket implements IRunnable {
             HttpResponse<String> response = client.doRequest(
                     Paths.get("src/main/resources/mutations/create-etch-packet.graphql"),
                     payload,
-                    filesToUpload.toArray(filesToUpload.toArray(new Path[0]))
+                    filesToUpload
             );
             String headers = String.valueOf(response.request().headers());
             String res = response.body();

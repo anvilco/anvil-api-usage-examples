@@ -50,7 +50,7 @@ public class GraphqlClient extends BaseClient {
         return this.doRequest(new String(Files.readAllBytes(queryFile)), variables);
     }
 
-    public HttpResponse<String> doRequest(Path queryFile, CreateEtchPacket variables, Path[] files) throws IOException, InterruptedException {
+    public HttpResponse<String> doRequest(Path queryFile, CreateEtchPacket variables, Map<Integer, Path> files) throws IOException, InterruptedException {
         // GraphQL requests are in the format `{ "query": "", "variables": { ... } }`
         Map<String, Serializable> graphqlMap = new HashMap<>();
         graphqlMap.put("query", new String(Files.readAllBytes(queryFile)));
@@ -65,10 +65,10 @@ public class GraphqlClient extends BaseClient {
         //
         // This will be handled automatically in a future Anvil Java library.
         LinkedHashMap<String, String[]> fileMap = new LinkedHashMap<>();
-        for (int fileIdx = 0; fileIdx < files.length; fileIdx++) {
-            String mapStr = String.format("variables.files.%s.file", fileIdx);
+        for (Map.Entry<Integer, Path> file : files.entrySet()) {
+            String mapStr = String.format("variables.files.%s.file", file.getKey());
             // The value part of the map needs to be an array.
-            fileMap.put(String.valueOf(fileIdx), new String[]{mapStr});
+            fileMap.put(String.valueOf(file.getKey()), new String[]{mapStr});
         }
 
         // We're using Methanol's Multipart request builder here since it's
@@ -80,9 +80,8 @@ public class GraphqlClient extends BaseClient {
                 .formPart("map", HttpRequest.BodyPublishers.ofString(this._objectMapper.writeValueAsString(fileMap)));
 
         // Go through the files and add them to our multipart builder
-        for (String fileKey : fileMap.keySet()) {
-            var file = files[Integer.parseInt(fileKey)];
-            multipartBody.filePart(fileKey, files[Integer.parseInt(fileKey)]);
+        for (Map.Entry<Integer, Path> file : files.entrySet()) {
+            multipartBody.filePart(String.valueOf(file.getKey()), file.getValue());
         }
 
         HttpRequest request = this.createRequestBuilder()
