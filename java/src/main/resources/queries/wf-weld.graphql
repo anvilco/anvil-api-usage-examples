@@ -1,0 +1,19 @@
+query WeldQuery (
+    $eid: String,
+    $organizationSlug: String,
+    $slug: String
+) {
+    weld (
+        eid: $eid,
+        organizationSlug: $organizationSlug,
+        slug: $slug
+    ) {
+        eid
+        name
+        forges {
+            eid
+            slug
+            name
+        }
+    }
+}

@@ -1,0 +1,39 @@
+{
+  "title": "Example Invoice",
+  "data": [
+    {
+      "label": "Name",
+      "content": "Sally Jones"
+    },
+    {
+      "content": "Lorem **ipsum** dolor sit _amet_, consectetur adipiscing elit, sed [do eiusmod](https://www.useanvil.com/docs) tempor incididunt ut labore et dolore magna aliqua. Ut placerat orci nulla pellentesque dignissim enim sit amet venenatis.\n\nMi eget mauris pharetra et ultrices neque ornare aenean.\n\n* Sagittis eu volutpat odio facilisis.\n\n* Erat nam at lectus urna."
+    },
+    {
+      "table": {
+        "firstRowHeaders": true,
+        "rows": [
+          [
+            "Description",
+            "Quantity",
+            "Price"
+          ],
+          [
+            "4x Large Widgets",
+            "4",
+            "$40.00"
+          ],
+          [
+            "10x Medium Sized Widgets in dark blue",
+            "10",
+            "$100.00"
+          ],
+          [
+            "10x Small Widgets in white",
+            "6",
+            "$60.00"
+          ]
+        ]
+      }
+    }
+  ]
+}
