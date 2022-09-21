@@ -32,6 +32,7 @@ All supported languages have a directory at the root of this repo.
 * [TypeScript](/typescript)
 * [Python](/python)
 * [C#/.NET](/csharp)
+* [Java](/java)
 
 ## License
 
