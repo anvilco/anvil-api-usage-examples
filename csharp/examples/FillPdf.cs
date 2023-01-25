@@ -96,14 +96,17 @@ class FillPDF : RunnableBaseExample
         // If not, there will be an `System.IO.DirectoryNotFoundException` exception.
         var wasWritten = await client.FillPdf(pdfTemplateEid, payload, "./output/fill-output.pdf");
 
+        // Version number support
+        // A version number can also be passed in. This will retrieve a specific
+        // version of the PDF to be filled if you don't want the current version
+        // to be used.
+        //
+        // You can also use the constant `ClientConstants.VERSION_LATEST` to fill a PDF with
+        // your latest, unpublished changes. Use this if you'd like to fill out a
+        // draft version of your template/PDF.
+        // var wasWritten = await client.FillPdf(pdfTemplateEid, payload, ClientConstants.VERSION_LATEST);
+
         // const outputFilepath = path.join(__dirname, '..', 'output', 'fill-output.pdf')
-        if (wasWritten)
-        {
-            Console.WriteLine("Fill PDF finished");
-        }
-        else
-        {
-            Console.WriteLine("Fill PDF did not finish successfully");
-        }
+        Console.WriteLine(wasWritten ? "Fill PDF finished" : "Fill PDF did not finish successfully");
     }
 }
