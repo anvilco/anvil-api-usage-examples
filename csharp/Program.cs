@@ -50,7 +50,12 @@ public class Program
         // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
         var apiKey = Environment.GetEnvironmentVariable("ANVIL_API_KEY");
         var programToRun = args[0];
-        var otherArgs = args[1];
+        string? otherArgs = null;
+
+        if (args.Length > 1)
+        {
+            otherArgs = args[1];
+        }
 
         var found = programsList.Find(obj => obj.Name.Equals(programToRun));
         if (found != null)
