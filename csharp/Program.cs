@@ -49,6 +49,12 @@ public class Program
         // Get your API key from your Anvil organization settings.
         // See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
         var apiKey = Environment.GetEnvironmentVariable("ANVIL_API_KEY");
+
+        if (apiKey == null)
+        {
+            throw new Exception("API key must be provided");
+        }
+
         var programToRun = args[0];
         string? otherArgs = null;
 
@@ -60,7 +66,12 @@ public class Program
         var found = programsList.Find(obj => obj.Name.Equals(programToRun));
         if (found != null)
         {
-            var runnable = (RunnableBaseExample) Activator.CreateInstance(found.Klass, apiKey);
+            var runnable = (RunnableBaseExample) Activator.CreateInstance(found.Klass)!;
+
+            if (runnable == null)
+            {
+                throw new Exception("Unable to run example");
+            }
 
             if (otherArgs == null)
             {
