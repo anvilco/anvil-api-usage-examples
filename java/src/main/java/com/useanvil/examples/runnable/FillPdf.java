@@ -1,8 +1,10 @@
 package com.useanvil.examples.runnable;
 
+import com.useanvil.examples.Constants;
 import com.useanvil.examples.client.RestClient;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 import java.nio.file.*;
 
@@ -45,8 +47,16 @@ public class FillPdf implements IRunnable {
             // response data will be the filled PDF binary data. It is important that the
             // data is saved with no encoding! Otherwise, the PDF file will be corrupt.
             response = client.fillPdf(pdfTemplateEid, payload);
+
+            // You can also provide a version number if you'd like to fill a specific version
+            // of the template.
+            // See `Constants.LATEST_VERSION_INT` and `Constants.PUBLISHED_VERSION_INT` for more
+            // details on special version numbers.
+            // response = client.fillPdf(pdfTemplateEid, payload, Constants.LATEST_VERSION_INT);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+        // You will also need this catch clause if you use the `fillPdf` method that includes versionNumber.
+        // } catch (URISyntaxException e ) {
         }
 
         try {

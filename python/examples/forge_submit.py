@@ -1,7 +1,3 @@
-from typing import Optional
-
-from python_anvil.api_resources.mutations import BaseQuery
-from python_anvil.api_resources.payload import BaseModel
 
 DEFAULT_RESPONSE_QUERY = """
 {
@@ -41,6 +37,7 @@ FORGE_SUBMIT = """
         $groupArrayId: String,
         $groupArrayIndex: Int,
         $errorType: String,
+        $webhookURL: String,
     ) {{
         forgeSubmit (
             forgeEid: $forgeEid,
@@ -53,7 +50,8 @@ FORGE_SUBMIT = """
             timezone: $timezone,
             groupArrayId: $groupArrayId,
             groupArrayIndex: $groupArrayIndex,
-            errorType: $errorType
+            errorType: $errorType,
+            webhookURL: $webhookURL
         ) {query}
     }}
 """
