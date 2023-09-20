@@ -13,10 +13,10 @@ Welcome to Anvil API usage examples in TypeScript! There are [example scripts](e
 
 All scripts will require that you have an Anvil API key. See [the getting started documentation](https://www.useanvil.com/docs/api/getting-started) for help grabbing your API key.
 
-When you have your API key, put it in the `.env` file here in this folder. Your `.env` will look like this:
+When you have your API key, copy `.env.example` in this folder to `.env`, then set ANVIL_API_KEY to your API key. Your `.env` will look like this:
 
 ```sh
-ANVIL_API_KEY=<your API key>
+ANVIL_API_KEY=yourAPIKey2uzgMH0ps4cyQyadhA2Wdt
 ```
 
 Each script is set up to be runnable with minimal input. Once you have an API key, you can clone this repo and run the example scripts from this directory.

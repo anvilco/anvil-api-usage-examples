@@ -9,7 +9,7 @@
 // By default the script uses the sample workflow in your organization when you
 // signed up for an Anvil account.
 //
-// ANVIL_API_KEY=<yourAPIKey> node examples/create-update-workflow-submission.js <my-org-slug>
+// node examples/create-update-workflow-submission.js <my-org-slug>
 //
 // The script will:
 //
