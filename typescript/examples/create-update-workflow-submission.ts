@@ -26,7 +26,7 @@
 // Objects within Workflows have their own terminology. See the following for
 // more info: https://www.useanvil.com/docs/api/getting-started#terminology
 
-import Anvil from '@anvilco/anvil'
+import Anvil, { GraphQLResponse } from '@anvilco/anvil'
 import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
@@ -155,7 +155,7 @@ async function submitToWorkflowWebform ({
       updatedAt
     }
   }`
-  const { data, errors }: Anvil.GraphQLResponse = await anvilClient.forgeSubmit({ variables, responseQuery })
+  const { data, errors }: GraphQLResponse = await anvilClient.forgeSubmit({ variables, responseQuery })
   if (errors) {
     console.log(formatJSON(errors))
     throw new Error('There were errors submitting to the workflow')
@@ -200,7 +200,7 @@ async function getWeld ({
   `
 
   const variables = { slug: weldSlug, organizationSlug }
-  const { data, errors }: Anvil.GraphQLResponse = await anvilClient.requestGraphQL(
+  const { data, errors }: GraphQLResponse = await anvilClient.requestGraphQL(
     {
       query: weldQuery,
       variables,

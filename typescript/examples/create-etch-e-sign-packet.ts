@@ -25,7 +25,7 @@
 // well.
 
 import path from 'path'
-import Anvil from '@anvilco/anvil'
+import Anvil, { GraphQLResponse } from '@anvilco/anvil'
 import run from '../lib/run'
 
 // Get your API key from your Anvil organization settings.
@@ -53,12 +53,12 @@ if (!signerEmail) {
 }
 
 async function createEtchPacket () {
-  const anvilClient = new Anvil({ apiKey })
+  const anvilClient = new Anvil({ apiKey, baseURL: "https://staging.useanvil.com" })
   const ndaFile = Anvil.prepareGraphQLFile(fileUploadPath)
   const variables = getPacketVariables(ndaFile)
 
   console.log('Creating Etch e-sign packet...')
-  const { statusCode, data, errors } : Anvil.GraphQLResponse = await anvilClient.createEtchPacket({
+  const { statusCode, data, errors } : GraphQLResponse = await anvilClient.createEtchPacket({
     variables,
   })
   console.log('Finished! Status code:', statusCode) // => 200, 400, 404, etc
