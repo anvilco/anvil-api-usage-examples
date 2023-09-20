@@ -8,14 +8,13 @@
 // This script is runnable as is, all you need to do is supply your own API key
 // in the ANVIL_API_KEY environment variable.
 //
-// ANVIL_API_KEY=<yourAPIKey> node examples/generate-html-to-pdf.js
+// node examples/generate-html-to-pdf.js
 //
 // The filled PDF will be saved to `output/generate-html-output.pdf`. You can
 // open the filled PDF immediately after saving the file on OSX machines with
 // the `open` command:
 //
-// ANVIL_API_KEY=<yourAPIKey> \
-//   node examples/generate-html-to-pdf.js && open output/generate-html-output.pdf
+// node examples/generate-html-to-pdf.js && open output/generate-html-output.pdf
 
 const fs = require('fs')
 const path = require('path')

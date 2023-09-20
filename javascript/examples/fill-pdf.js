@@ -7,13 +7,13 @@
 // in the ANVIL_API_KEY environment variable. By default this script fills a
 // global sample template.
 //
-// ANVIL_API_KEY=<yourAPIKey> node examples/fill-pdf.js
+// node examples/fill-pdf.js
 //
 // The filled PDF will be saved to `output/fill-output.pdf`. You can open the
 // filled PDF immediately after saving the file on OSX machines with the
 // `open` command:
 //
-// ANVIL_API_KEY=<yourAPIKey> node examples/fill-pdf.js && open output/fill-output.pdf
+// node examples/fill-pdf.js && open output/fill-output.pdf
 
 const fs = require('fs')
 const path = require('path')

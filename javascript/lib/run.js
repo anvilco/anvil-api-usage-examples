@@ -1,3 +1,4 @@
+require('dotenv/config')
 
 // Run an async function and wait until it is finished.
 module.exports = (fn) => {
