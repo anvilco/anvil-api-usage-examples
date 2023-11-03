@@ -33,35 +33,35 @@ Scripts will output filled and generated PDFs into the [output directory](output
 [Fill a PDF template](examples/fill-pdf.js):
 
 ```sh
-$ ANVIL_API_KEY=<yourAPIKey> node examples/fill-pdf.js
+$ node examples/fill-pdf.js
 ```
 
 [Generate a PDF from HTML and CSS](examples/generate-html-to-pdf.js):
 
 ```sh
-$ ANVIL_API_KEY=<yourAPIKey> node examples/generate-html-to-pdf.js
+$ node examples/generate-html-to-pdf.js
 ```
 
 [Generate a PDF from Markdown](examples/generate-markdown-to-pdf.js):
 
 ```sh
-$ ANVIL_API_KEY=<yourAPIKey> node examples/generate-markdown-to-pdf.js
+$ node examples/generate-markdown-to-pdf.js
 ```
 
 [Creating an e-sign packet](examples/create-etch-e-sign-packet.js):
 
 ```sh
-$ ANVIL_API_KEY=<yourAPIKey> node examples/create-etch-e-sign-packet.js <your-real-email@address.com>
+$ node examples/create-etch-e-sign-packet.js <your-real-email@address.com>
 ```
 
 [Start and update workflow submissions](examples/create-update-workflow-submission.js):
 
 ```sh
-$ ANVIL_API_KEY=<yourAPIKey> node examples/create-update-workflow-submission.js <your-org-slug>
+$ node examples/create-update-workflow-submission.js <your-org-slug>
 ```
 
 [Make an arbitrary GraphQL request](examples/make-graphql-request.js):
 
 ```sh
-$ ANVIL_API_KEY=<yourAPIKey> node examples/make-graphql-request.js
+$ node examples/make-graphql-request.js
 ```
