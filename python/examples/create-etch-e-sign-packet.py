@@ -25,6 +25,7 @@
 # well.
 
 import os
+from pathlib import Path
 import sys
 import base64
 from python_anvil.api import Anvil
@@ -40,7 +41,18 @@ from python_anvil.api_resources.payload import (
 
 # Get your API key from your Anvil organization settings.
 # See https://www.useanvil.com/docs/api/getting-started#api-key for more details.
-from examples.helpers import get_output_file_path, get_test_pdf_path
+# from examples.helpers import get_output_file_path, get_test_pdf_path
+
+def get_output_file_path(file, output_filename):
+    file_path = Path(file).parent.absolute()
+    return os.path.join(file_path, '..', 'output', output_filename)
+
+
+def get_test_pdf_path(curr_file):
+    file_path = Path(curr_file).parent.absolute()
+    return os.path.join(file_path, '..', '..', 'static', 'test-pdf-nda.pdf')
+
+
 
 API_KEY = os.environ.get("ANVIL_API_KEY")
 
@@ -49,7 +61,7 @@ API_KEY = os.environ.get("ANVIL_API_KEY")
 #
 # See https://www.useanvil.com/help/tutorials/set-up-a-pdf-template for details
 # on setting up your own template
-PDF_TEMPLATE_ID = "f9eQzbUgCCRVDrd4gt8b"
+PDF_TEMPLATE_ID = "9XbvsREz5mS3jNs72lGP"
 
 # The second file is an NDA we'll upload and specify the field locations
 FILE_UPLOAD_PATH = get_output_file_path(__file__, "test-pdf-nda.pdf")
@@ -181,9 +193,39 @@ def build_packet_payload(file_path: str, signer_name: str, signer_email: str):
         name=f"Test Docs - {signer_name}",
         signature_email_subject="Custom email subject",
         signature_email_body="Custom please sign these documents....",
+        signature_page_options=dict(
+            title='Añade tu firma',
+            description='hi world',
+            signatureLabel='Firma',
+            initialLabel="iniciales",
+            acceptTitle="Acepta tu firma",
+            acceptDescription="A continuación se indica cómo aparecerán su firma y sus iniciales en todos los documentos que debes firmar.",
+            acceptButtonText="Acepto mi firma e iniciales",
+            drawSignatureTitle="Dibuja tu firma",
+            drawSignatureDescription="Tu firma aparecerá en todos los documentos en los que tengas que firmar.",
+            drawSignatureButtonText="Acepto mi firma",
+            drawInitialsTitle="Dibuja tus iniciales",
+            drawInitialsDescription="Sus iniciales aparecerán en todos los documentos en los que tenga que poner sus iniciales.",
+            drawInitialsButtonText="Acepto mis iniciales",
+            signTitle="Firmar todos los documentos",
+            signDescription="Haga click a continuación para firmar y fechar todos los documentos.",
+            signDescriptionCompleted="Se han cumplimentado y firmado los documentos.",
+            signConsentText="He revisado los documentos y autorizo el uso de firmas electrónicas.",
+            signButtonText="Firmar {{packet.name}}",
+            completedButtonText="Ir a la página de descarga",
+            error="Oops hubo un error:",
+            style=dict(
+                primaryColor = "#1985a1",
+                successColor = "#1985a1",
+                infoColor = "#46494c",
+                linkColo = "#1985a1"
+            )
+        ),
         # Merge all PDFs into one PDF before signing.
         # Signing users will get one PDF instead of all PDFs as separate files.
         # merge_pdfs=False,
+
+        
     )
 
     nda_file, sample_template = get_file_payloads(file_path)
@@ -258,7 +300,7 @@ def create_etch_packet():
         print(res["errors"])
         return
 
-    packet_details = res["data"]["createEtchPacket"]
+    packet_details = res["createEtchPacket"]
     print("Visit the new packet on your dashboard:", packet_details.get("detailsURL"))
     print(packet_details)
 
