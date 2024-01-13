@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Anvil builder embed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style media="screen">
+      html,
+      body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        font-family: Helvetica, Arial;
+        background-color: gainsboro;
+      }
+      body {
+        padding: 30px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+
+      .container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .toolbar {
+        margin-bottom: 20px;
+      }
+      .toolbar h2 {
+        margin: 0 0 10px 0;
+      }
+
+      iframe {
+        flex-grow: 1;
+        border: 2px solid #ccc;
+      }
+
+      .messages {
+        height: 15%;
+        overflow-y: auto;
+      }
+      .messages h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+      .message {
+        border-bottom: 1px solid black;
+        padding: 8px 0;
+        font-family: monaco, consolas;
+        font-size: 14px;
+      }
+      .message:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="toolbar">
+        <h2>Your App</h2>
+      </div>
+      ↓ iFrame ↓
+      <iframe src=""></iframe>
+      ↑ iFrame ↑
+      <div>
+        <button type="button" name="button" class="submit-pdf-template-button">
+          Submit PDF template editor
+        </button>
+      </div>
+      <div class="messages">
+        <h3>Parent frame messages</h3>
+      </div>
+    </div>
+
+    <script>
+      var iframe = document.querySelector('iframe')
+      var messages = document.querySelector('.messages')
+      var button = document.querySelector('.submit-pdf-template-button')
+
+      button.addEventListener('click', () => {
+        console.log('Submitting PDF template editor')
+        iframe.contentWindow.postMessage({
+          action: 'castEditSubmit'
+        }, '*')
+      })
+
+      const params = new URLSearchParams(location.search.slice(1))
+      const url = params.get('url')
+      if (url) {
+        console.log('Embedding editor', url)
+        iframe.src = url
+      }
+
+      window.addEventListener(
+        'message',
+        (event) => {
+          if (event.data && event.data.source !== 'react-devtools-content-script') {
+            console.log('Message from', event.origin, event.data)
+            const message = document.createElement('div')
+            message.className = 'message'
+            message.textContent = JSON.stringify(event.data)
+            messages.appendChild(message)
+          }
+        },
+        false
+      )
+    </script>
+  </body>
+</html>
