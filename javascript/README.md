@@ -17,6 +17,7 @@ When you have your API key, copy `.env.example` in this folder to `.env`, then s
 
 ```sh
 ANVIL_API_KEY=yourAPIKey2uzgMH0ps4cyQyadhA2Wdt
+ANVIL_ORGANIZATION_EID=yourEID20Hw5RkPIeabc
 ```
 
 Each script is set up to be runnable with minimal input. Once you have an API key, you can clone this repo and run the example scripts from this directory.

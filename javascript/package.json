@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve:static": "cd .. && http-server -p 8089"
   },
   "repository": {
     "type": "git",
@@ -17,9 +18,10 @@
   },
   "homepage": "https://github.com/anvilco/anvil-api-usage-examples#readme",
   "dependencies": {
-    "@anvilco/anvil": "^3.1.0"
+    "@anvilco/anvil": "^3.2.0"
   },
   "devDependencies": {
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "http-server": "^14.1.1"
   }
 }
