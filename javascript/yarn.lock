@@ -2,15 +2,24 @@
 # yarn lockfile v1
 
 
-"@anvilco/anvil@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/@anvilco/anvil/-/anvil-3.1.0.tgz#a94b7123db934e93180fd1886864b312300f2eca"
-  integrity sha512-t34LROUI5eT7raheCzAz/S3sulMifSz+6YIm9t21rwo1H56k1Vm72tw7Yo/4YbBMoPgOAmJdk8VkupeEshtprQ==
+"@anvilco/anvil@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.npmjs.org/@anvilco/anvil/-/anvil-3.2.0.tgz#5d92b54b523ed071df7621144e0801d9a8321ca7"
+  integrity sha512-0pass7ZgqqwAeIdPbAy+7FrJ1nY2Q6AH7/DVsuWMcQAA0stYUokPyl1/YA2Fvve0pqmhpxMet70NCSRTB2CotA==
   dependencies:
+    "@anvilco/node-fetch" "^3.3.3-beta.0"
     abort-controller "^3.0.0"
     extract-files "^13"
     limiter "^2.1.0"
-    node-fetch "^3.3.2"
+
+"@anvilco/node-fetch@^3.3.3-beta.0":
+  version "3.3.3-beta.0"
+  resolved "https://registry.npmjs.org/@anvilco/node-fetch/-/node-fetch-3.3.3-beta.0.tgz#4d0fdb4214a6c851651333307ee0b32b3068465d"
+  integrity sha512-hiruVZHjUvBxaTBSCRoeGNRknJWSwatrAm+uczyjcDGMpblOQb28sPjFVqGJ3EyOFzbIfXrm03/uIg8pr1NILA==
+  dependencies:
+    data-uri-to-buffer "^4.0.0"
+    fetch-blob "^3.1.4"
+    formdata-polyfill "^4.0.10"
 
 abort-controller@^3.0.0:
   version "3.0.0"
@@ -283,15 +292,6 @@ node-domexception@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/node-domexception/-/node-domexception-1.0.0.tgz#6888db46a1f71c0b76b3f7555016b63fe64766e5"
   integrity sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==
-
-node-fetch@^3.3.2:
-  version "3.3.2"
-  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz#d1e889bacdf733b4ff3b2b243eb7a12866a0b78b"
-  integrity sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==
-  dependencies:
-    data-uri-to-buffer "^4.0.0"
-    fetch-blob "^3.1.4"
-    formdata-polyfill "^4.0.10"
 
 object-inspect@^1.9.0:
   version "1.13.1"

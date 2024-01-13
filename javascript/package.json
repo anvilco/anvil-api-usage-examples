@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/anvilco/anvil-api-usage-examples#readme",
   "dependencies": {
-    "@anvilco/anvil": "^3.1.0"
+    "@anvilco/anvil": "^3.2.0"
   },
   "devDependencies": {
     "dotenv": "^16.3.1",
