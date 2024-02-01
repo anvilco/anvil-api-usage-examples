@@ -31,7 +31,7 @@ FILE_OUTPUT = get_output_file_path(__file__, "fill-output.pdf")
 #
 # See https://www.useanvil.com/help/tutorials/set-up-a-pdf-template for details
 # on setting up your own template
-PDF_TEMPLATE_EID = "f9eQzbUgCCRVDrd4gt8b"
+PDF_TEMPLATE_EID = "05xXsZko33JIO6aq5Pnr"
 
 # PDF fill data can be an instance of `FillPDFPayload` or a plain dict.
 # `FillPDFPayload` is from `python_anvil.api_resources.payload import FillPDFPayload`.

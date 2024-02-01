@@ -1,11 +1,1 @@
-certifi @ file:///home/allan/.cache/pypoetry/artifacts/b0/0d/df/4aa04d9b421fc5f1438b55d4b37516d21ef0ba40158bf7f9dfb28122ca/certifi-2022.6.15-py3-none-any.whl
-charset-normalizer @ file:///home/allan/.cache/pypoetry/artifacts/bf/59/3f/6838dadc818c6595ae4a00c31af0da89039c1eaa370871d38072845e8d/charset_normalizer-2.1.0-py3-none-any.whl
-click @ file:///home/allan/.cache/pypoetry/artifacts/9d/ca/2f/bc3cc4a294e96f355d01d24ac6fefdde4c6286f9f63b7ce1c91d5f0c22/click-8.1.3-py3-none-any.whl
-idna @ file:///home/allan/.cache/pypoetry/artifacts/d5/04/80/9c17fd3240a37d12ff2ef042b0306aeb1abd2d8b95f150fd60be938352/idna-3.3-py3-none-any.whl
-pydantic @ file:///home/allan/.cache/pypoetry/artifacts/df/d3/01/9525a0f8335a687df1cb247f135ac8ead2347dfd7f53f131a186b1db8f/pydantic-1.9.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-python-anvil @ file:///home/allan/.cache/pypoetry/artifacts/f9/64/81/c954d0b895b48683d9cad52fa727f83d8998f1ca00dfc6d7f196173d84/python_anvil-1.4.1-py3-none-any.whl
-ratelimit @ file:///home/allan/.cache/pypoetry/artifacts/5e/7a/3e/c79f53468b62e30494b0b5140901bc42a61f50da0146f857d9b13d9fc5/ratelimit-2.2.1.tar.gz
-requests @ file:///home/allan/.cache/pypoetry/artifacts/96/68/40/1b2019f1ca6a6d07b2a3107daab4dca1e11111be3af28a435f7cd0463a/requests-2.28.1-py3-none-any.whl
-tabulate @ file:///home/allan/.cache/pypoetry/artifacts/8e/f2/fe/489189568a5d8b03c590746053ab332ab2437024920b4fb919860bcc48/tabulate-0.8.10-py3-none-any.whl
-typing_extensions @ file:///home/allan/.cache/pypoetry/artifacts/c7/a2/3c/b8e5224a09b65b04693c613a52a41d6161affcaca091fbb647520b186c/typing_extensions-4.3.0-py3-none-any.whl
-urllib3 @ file:///home/allan/.cache/pypoetry/artifacts/30/26/bc/2eb29ccbecde8a15ec98499d4c18d6cd2316febdce851786c0cca22bde/urllib3-1.26.11-py2.py3-none-any.whl
+python-anvil==1.4.1

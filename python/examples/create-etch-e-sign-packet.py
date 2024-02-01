@@ -49,7 +49,7 @@ API_KEY = os.environ.get("ANVIL_API_KEY")
 #
 # See https://www.useanvil.com/help/tutorials/set-up-a-pdf-template for details
 # on setting up your own template
-PDF_TEMPLATE_ID = "f9eQzbUgCCRVDrd4gt8b"
+PDF_TEMPLATE_ID = "05xXsZko33JIO6aq5Pnr"
 
 # The second file is an NDA we'll upload and specify the field locations
 FILE_UPLOAD_PATH = get_output_file_path(__file__, "test-pdf-nda.pdf")
