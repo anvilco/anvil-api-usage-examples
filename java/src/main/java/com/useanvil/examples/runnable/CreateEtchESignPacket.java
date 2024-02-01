@@ -100,7 +100,6 @@ public class CreateEtchESignPacket implements IRunnable {
     }
 
     private CreateEtchPacket getPacketVariables(String pdfTemplateEid, String signerName, String signerEmail) {
-        String res;
         CreateEtchPacket packetPayload = new CreateEtchPacket();
 
         // Subject & body of the emails to signers
