@@ -24,6 +24,37 @@ You can install your dependencies via the normal `pip` install process or with `
 
 Also note that `python-anvil` (the official Anvil API library) has a requirement of Python 3.6+.
 
+### Install via `poetry`
+
+Make sure you have `poetry` installed. If not check the official site for
+installation instructions: https://python-poetry.org/docs/
+
+```sh
+cd python
+
+# Install dependencies and local venv
+poetry install
+
+# Check if dependencies installed properly
+$ poetry run anvil
+Usage: anvil [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --debug / --no-debug
+  --help                Show this message and exit.
+
+Commands:
+  cast                Fetch Cast data given a Cast eid.
+  create-etch         Create an etch packet with a JSON file.
+  current-user        Show details about your API user
+  download-documents  Download etch documents
+  fill-pdf            Fill PDF template with data.
+  generate-etch-url   Generate an etch url for a signer
+  generate-pdf        Generate a PDF.
+  gql-query           Run a raw graphql query
+  weld                Fetch weld info or list of welds.
+```
+
 ### Install via `pip`
 
 ```sh
@@ -47,37 +78,6 @@ pip install -r requirements.txt
 # Check if it installed properly by running the `anvil` CLI app
 $ anvil
 
-Usage: anvil [OPTIONS] COMMAND [ARGS]...
-
-Options:
-  --debug / --no-debug
-  --help                Show this message and exit.
-
-Commands:
-  cast                Fetch Cast data given a Cast eid.
-  create-etch         Create an etch packet with a JSON file.
-  current-user        Show details about your API user
-  download-documents  Download etch documents
-  fill-pdf            Fill PDF template with data.
-  generate-etch-url   Generate an etch url for a signer
-  generate-pdf        Generate a PDF.
-  gql-query           Run a raw graphql query
-  weld                Fetch weld info or list of welds.
-```
-
-### Install via `poetry`
-
-Make sure you have `poetry` installed. If not check the official site for
-installation instructions: https://python-poetry.org/docs/
-
-```sh
-cd python
-
-# Install dependencies and local venv
-poetry install
-
-# Check if dependencies installed properly
-$ poetry run anvil
 Usage: anvil [OPTIONS] COMMAND [ARGS]...
 
 Options:
