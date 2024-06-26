@@ -127,7 +127,8 @@ async function createAndUpdateWorkflowSubmission () {
 
   // We have the new objects
   console.log(`Submission updated!`)
-  console.log(formatJSON(submission), '\n')
+  console.log(formatJSON(submission))
+  console.log(submission.continueURL, '\n')
 }
 
 
@@ -141,6 +142,7 @@ async function submitToWorkflowWebform ({ anvilClient, variables }) {
     createdAt
     updatedAt
     resolvedPayload
+    continueURL
     weldData {
       eid
       displayTitle
