@@ -37,7 +37,6 @@ const Anvil = require('@anvilco/anvil')
 const run = require('../lib/run')
 
 const apiKey = process.env.ANVIL_API_KEY
-const organizationEid = process.env.ANVIL_ORGANIZATION_EID
 
 const filePath = path.join(__dirname, '..', '..', 'static', 'sample-template-fillable.pdf')
 const title = 'Test Upload'
@@ -61,7 +60,6 @@ async function graphQLResponse (graphQLQuery) {
 async function createCast (variables) {
   const query = `
     mutation CreateCast(
-      $organizationEid: String,
       $title: String,
       $file: Upload!,
       $isTemplate: Boolean,
@@ -69,7 +67,6 @@ async function createCast (variables) {
       $allowedAliasIds: [String],
     ) {
       createCast (
-        organizationEid: $organizationEid,
         title: $title,
         file: $file,
         isTemplate: $isTemplate,
@@ -132,13 +129,9 @@ async function main () {
   // Upload the PDF template
 
   const createCastResponse = await createCast({
-    organizationEid,
     title,
     file,
     isTemplate: true,
-
-    // Set to false to ignore form fields in the PDF
-    detectFields: true,
   })
 
   const newPDFTemplate = createCastResponse.data.createCast
