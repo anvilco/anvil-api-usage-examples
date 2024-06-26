@@ -37,7 +37,6 @@ const Anvil = require('@anvilco/anvil')
 const run = require('../lib/run')
 
 const apiKey = process.env.ANVIL_API_KEY
-const organizationEid = process.env.ANVIL_ORGANIZATION_EID
 
 const filePath = path.join(__dirname, '..', '..', 'static', 'sample-template-fillable.pdf')
 const title = 'Test Upload'
@@ -61,7 +60,6 @@ async function graphQLResponse (graphQLQuery) {
 async function createCast (variables) {
   const query = `
     mutation CreateCast(
-      $organizationEid: String,
       $title: String,
       $file: Upload!,
       $isTemplate: Boolean,
@@ -69,7 +67,6 @@ async function createCast (variables) {
       $allowedAliasIds: [String],
     ) {
       createCast (
-        organizationEid: $organizationEid,
         title: $title,
         file: $file,
         isTemplate: $isTemplate,
@@ -132,13 +129,9 @@ async function main () {
   // Upload the PDF template
 
   const createCastResponse = await createCast({
-    organizationEid,
     title,
     file,
     isTemplate: true,
-
-    // Set to false to ignore form fields in the PDF
-    detectFields: true,
   })
 
   const newPDFTemplate = createCastResponse.data.createCast
@@ -152,17 +145,17 @@ async function main () {
   const generateResponse = await generateEmbedURL({
     eid: newPDFTemplate.eid,
     type: 'edit-pdf-template',
-    // 10 minutes
-    validForSeconds: 10 * 60,
+    validForSeconds: 90 * 60, // 90 minutes
     metadata: {
       myUserId: '1234',
       anythingElse: 'you want',
     },
     options: {
-      pageTitle: 'Title of the page',
       mode: 'preset-fields',
+
+      pageTitle: 'Title of the page',
       title: 'Welcome',
-      description: 'Please draw fields indicated below.',
+      description: 'Please drag fields onto the document',
       selectionDescription:
         'Select the field that best represents the box drawn.',
 
@@ -173,7 +166,16 @@ async function main () {
       // You can hide the title bar with showPageTitleBar. This removes the
       // finish button so you can show your own finish button. You will need to
       // submit the iframe with the `castEditSubmit` iframe event.
-      // showPageTitleBar: true,
+      showPageTitleBar: false,
+
+      // Allow users to replace the underlying PDF
+      showReplaceDocumentAction: true,
+
+      // Show the field alignment tools for selected fields
+      showFieldAlignmentTools: true,
+
+      // Show the field styling tools for selected fields
+      showFieldStylingTools: true,
 
       fields: [
         // * `aliasId` can be anything you'd like
