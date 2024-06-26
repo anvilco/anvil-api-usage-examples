@@ -158,7 +158,6 @@ async function main () {
       description: 'Please drag fields onto the document',
       selectionDescription:
         'Select the field that best represents the box drawn.',
-      showReplaceDocumentAction: true,
 
       // Other possible copy changes
       // finishButtonText: 'Custom text',
@@ -167,7 +166,16 @@ async function main () {
       // You can hide the title bar with showPageTitleBar. This removes the
       // finish button so you can show your own finish button. You will need to
       // submit the iframe with the `castEditSubmit` iframe event.
-      // showPageTitleBar: true,
+      showPageTitleBar: false,
+
+      // Allow users to replace the underlying PDF
+      showReplaceDocumentAction: true,
+
+      // Show the field alignment tools for selected fields
+      showFieldAlignmentTools: true,
+
+      // Show the field styling tools for selected fields
+      showFieldStylingTools: true,
 
       fields: [
         // * `aliasId` can be anything you'd like
