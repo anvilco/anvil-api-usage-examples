@@ -145,19 +145,20 @@ async function main () {
   const generateResponse = await generateEmbedURL({
     eid: newPDFTemplate.eid,
     type: 'edit-pdf-template',
-    // 10 minutes
-    validForSeconds: 10 * 60,
+    validForSeconds: 90 * 60, // 90 minutes
     metadata: {
       myUserId: '1234',
       anythingElse: 'you want',
     },
     options: {
-      pageTitle: 'Title of the page',
       mode: 'preset-fields',
+
+      pageTitle: 'Title of the page',
       title: 'Welcome',
-      description: 'Please draw fields indicated below.',
+      description: 'Please drag fields onto the document',
       selectionDescription:
         'Select the field that best represents the box drawn.',
+      showReplaceDocumentAction: true,
 
       // Other possible copy changes
       // finishButtonText: 'Custom text',
